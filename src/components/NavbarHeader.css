@@ -1,0 +1,24 @@
+.container-navbar {
+  background: #2F4F4F;
+  height: 5rem;
+  padding: 1rem;
+  font-size: large;
+  color: aliceblue;
+  margin: 0px auto;
+}
+
+.grow {
+  -webkit-transition:all 0.5s ease-out;
+  -moz-transition:all 0.5s ease-out;
+  -ms-transition:all 0.5s ease-out;
+  -o-transition:all 0.5s ease-out;
+  transition:all 0.5s ease-out;
+}
+
+.grow:hover {
+  -webkit-transform:scale(1.3);
+  -moz-transform:scale(1.3);
+  -ms-transform:scale(1.3);
+  -o-transform:scale(1.3);
+  transform:scale(1.3);
+}
