@@ -1,6 +1,9 @@
 import React, { Component } from 'react'
 import './RegisterForm.css'
+import { inject } from 'mobx-react';
+import UserStore from '../../stores/UserStore';
 
+@inject('UserStore')
 class RegisterForm extends Component {
   constructor () {
     super()
@@ -9,6 +12,7 @@ class RegisterForm extends Component {
       password: ''
     }
   }
+
   closeModal () {
     var modal = document.getElementById('myModal')
     modal.style.display = "none"
@@ -71,9 +75,18 @@ class RegisterForm extends Component {
     }
   }
 
+  clearForm () {
+    this.setState({
+      email: '',
+      password: ''
+    })
+  }
+
   handleSubmit = (e) => {
     e.preventDefault()
     this.closeModal()
+    this.clearForm()
+    UserStore.register(this.state.email, this.state.password)
   }
 
   render() {
@@ -83,10 +96,8 @@ class RegisterForm extends Component {
           <div className="container">
             <label htmlFor="email"><b>Email</b></label>
             <input type="text" placeholder="Enter Email" onChange={ this.handleChangeEmail } name="email" required  value ={this.state.email}/>
-
             <label htmlFor="psw"><b>Password</b></label>
             <input type="password" placeholder="Enter Password" onChange={ this.handleChangePassword } name="password" required value ={this.state.password}/>
-              
             <div className="container actionButton">
               <button type="button" onClick={ this.closeModal } className="cancelbtn">Cancel</button>
               <button type="submit" onClick= { this.handleSubmit } >Submit</button>

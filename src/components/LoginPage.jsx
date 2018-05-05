@@ -16,4 +16,4 @@ import UserStore from '../stores/UserStore';
   }
 }
 
-export default LoginPage;
+export default LoginPage; 

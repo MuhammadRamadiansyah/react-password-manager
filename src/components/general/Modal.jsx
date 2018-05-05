@@ -1,14 +1,18 @@
 import React, { Component } from 'react'
 import './Modal.css'
 import RegisterForm from './RegisterForm'
+import LoginForm from './LoginForm'
 
 export default class Modal extends Component {
 
   componentDidMount() {
     var modal = document.getElementById('myModal')
+    var loginModal = document.getElementById('loginModal')
     window.onclick = function(event) {
       if (event.target === modal) {
-          modal.style.display = "none";
+        modal.style.display = "none";
+      } else if (event.target === loginModal) {
+        loginModal.style.display = "none";
       }
     }
   }
@@ -17,19 +21,24 @@ export default class Modal extends Component {
     modal.style.display = "block"
   }
 
-  closeModal () {
-    var modal = document.getElementById('myModal')
-    modal.style.display = "none"
+  openLoginModal = () => {
+    var modal = document.getElementById('loginModal')
+    modal.style.display = "block"
   }
 
   render () {
     return (
       <div>
         <button className="modalbtn" type="button" onClick={this.openModal}>Register</button>
-        <button className="modalbtn" type="button" onClick={this.openModal}>Login</button>
+        <button className="modalbtn" type="button" onClick={this.openLoginModal}>Login</button>
         <div id="myModal" className="modal scale-up-center">
           <div className="modal-content">
             <RegisterForm />    
+          </div>
+        </div>
+        <div id="loginModal" className="modal scale-up-center">
+          <div className="modal-content">
+            <LoginForm />
           </div>
         </div>
       </div>
