@@ -7,10 +7,15 @@ table {
   min-width: 10rem;
 }
 
+.header-table {
+  background-color: antiquewhite;
+  border-radius: 4px;
+}
+
 td, th {
-  border: 3px solid #dddddd;
   text-align: center;
   padding: 8px;
+  border: 2px solid #dddddd;
 }
 
 tr:nth-child(even) {

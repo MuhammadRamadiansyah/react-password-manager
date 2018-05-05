@@ -9,7 +9,7 @@ class TableManager extends Component {
   render() {
     return (
       <table>
-        <thead>
+        <thead className="header-table">
           <tr>
             <th>No</th>
             <th>Apps</th>

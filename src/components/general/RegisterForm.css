@@ -1,0 +1,47 @@
+input[type=text], input[type=password] {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+.actionButton {
+  text-align: end;
+  margin: 0px 5px;
+}
+
+#message {
+  display:none;
+  color: #000;
+  position: relative;
+  padding: 20px;
+  margin-top: 10px;
+  text-align: left;
+}
+
+#message p {
+  padding: 10px 35px;
+  font-size: 18px;
+}
+
+.valid {
+  color: green;
+}
+
+.valid:before {
+  position: relative;
+  left: -35px;
+  content: "✔";
+}
+
+.invalid {
+  color: red;
+}
+
+.invalid:before {
+  position: relative;
+  left: -35px;
+  content: "✖";
+}
