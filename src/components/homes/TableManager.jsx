@@ -27,7 +27,7 @@ import { inject, observer } from 'mobx-react';
           <tr>
             <th>No</th>
             <th>Apps</th>
-            <th>Email / Username</th>
+            <th>Email</th>
             <th>Password</th>
             <th>Actions</th>
           </tr>

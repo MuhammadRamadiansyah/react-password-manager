@@ -6,6 +6,7 @@ import SearchFeature from './general/SearchFeature'
 import './general/Modal.css'
 import { inject, observer } from 'mobx-react';
 import UserStore from '../stores/UserStore';
+import swal from 'sweetalert'
 
 @inject('UserStore')
 @observer class NavbarHeader extends Component {
@@ -18,8 +19,25 @@ import UserStore from '../stores/UserStore';
   }
 
   logout = () => {
-    localStorage.removeItem('userKey')
-    UserStore.isLogin = false
+    swal({
+      title: "Are you sure?",
+      text: "Do you want to logout?",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    })
+    .then((willDelete) => {
+      if (willDelete) {
+        swal("Success logout!", {
+          icon: "success",
+        });
+        localStorage.removeItem('userKey')
+        UserStore.isLogin = false
+      } else {
+        swal("You are still login!");
+      }
+    })
+    
   }
 
   submit = (e, payload) => {

@@ -6,6 +6,7 @@ import UserStore from '../stores/UserStore';
 import AddListForm from './general/AddListForm.jsx'
 import './general/ModalAddList.css'
 import LoginForm from './general/LoginForm.jsx'
+import swal from 'sweetalert'
 
 @inject('UserStore')
 @observer class Home extends Component {
@@ -29,7 +30,23 @@ import LoginForm from './general/LoginForm.jsx'
   }
   
   deleteApp = (app) => {
-    UserStore.deleteApp(localStorage.getItem('userKey'), app['.key'])
+    swal({
+      title: "Are you sure?",
+      text: "Once deleted, you will not be able to recover this file",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    })
+    .then((willDelete) => {
+      if (willDelete) {
+        swal("Poof! Your file has been deleted!", {
+          icon: "success",
+        });
+        UserStore.deleteApp(localStorage.getItem('userKey'), app['.key'])
+      } else {
+        swal("Your file is safe!");
+      }
+    })
   }
 
   editApp = (app) => {
@@ -37,7 +54,8 @@ import LoginForm from './general/LoginForm.jsx'
       email: app.email,
       password: app.password,
       app: app.app,
-      key: app['.key']
+      key: app['.key'],
+      realpsw: app.realPassword
     })
     var editModal = document.getElementById('editListModal')
     editModal.style.display = "block"

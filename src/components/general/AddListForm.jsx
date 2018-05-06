@@ -19,7 +19,7 @@ class AddListForm extends Component {
       if (nextProps.data.email !== '') {
         this.setState({
           email: nextProps.data.email,
-          password: nextProps.data.password,
+          password: nextProps.data.realpsw,
           app: nextProps.data.app
         })
         nextProps.data.email = ''

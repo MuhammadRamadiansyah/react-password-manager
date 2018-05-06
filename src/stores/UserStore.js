@@ -1,5 +1,7 @@
 import { observable, computed } from 'mobx'
 import {db} from '../firebase'
+import swal from 'sweetalert'
+
 
 class UserStore {
   @observable user = {
@@ -49,15 +51,30 @@ class UserStore {
       email,
       password,
     })
+    swal({
+      title: "Good job!",
+      text: "You are successfully register!",
+      icon: "success",
+    })
   }
 
   registerApp = (key, payload) => {
     db.ref('users/' + key + '/apps').push(payload)
     this.getAppsData(key)
+    swal({
+      title: "Good job!",
+      text: "You are successfully add new app!",
+      icon: "success",
+    })
   }
 
   editApp = (key, keyApp, payload) => {
     db.ref('users/' + key + '/apps/' + keyApp).update(payload)
+    swal({
+      title: "Good job!",
+      text: "You are successfully edit your apps!",
+      icon: "success",
+    })
     this.getAppsData(key)
   }
 
@@ -67,6 +84,7 @@ class UserStore {
   }
 
   login = (email, password) => {
+    let loginCond = false
     db.ref('users').once('value', (snapshot) => {
       snapshot.forEach(element => {
         let getUser = element.val()
@@ -74,12 +92,23 @@ class UserStore {
           localStorage.setItem('userKey', element.key)
           this.getUsersData(localStorage.getItem('userKey'))
           this.getAppsData(localStorage.getItem('userKey'))
-        }
+          swal({
+            title: "Good job!",
+            text: "You are successfully login!",
+            icon: "success",
+          })
+          loginCond = true
+        } 
       })
+      if(!loginCond) {
+        swal("Oops!", "Username or password is wrong!", "error")
+      }
     })
   }
 
   lookPassword = (email, password, appKey) => {
+    let loginCond = false
+    console.log(password)
     db.ref('users').once('value', (snapshot) => {
       snapshot.forEach(element => {
         let getUser = element.val()
@@ -90,9 +119,13 @@ class UserStore {
             newData['.key'] = appKey
             newData.realPassword = getUser.apps[appKey].password
             this.user.apps.splice(index, 1, getUser.apps[appKey])
+            loginCond = true
           }
         }
       })
+      if(!loginCond) {
+        swal("Oops!", "Username or password is wrong!", "error")
+      }
     })
   }
 

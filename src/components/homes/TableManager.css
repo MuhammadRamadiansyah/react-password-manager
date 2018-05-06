@@ -8,20 +8,41 @@ table {
 }
 
 .header-table {
-  background-color: antiquewhite;
   border-radius: 4px;
+  background-color: lightgray
 }
 
 td, th {
   text-align: center;
   padding: 8px;
-  border: 2px solid indigo;
+  border: 1px solid black;
 }
 
 tr:nth-child(even) {
-  background-color: #dddddd;
+  background-color: lightgray
 }
 
 span {
-  margin: 0px 3px;
+  margin: 0px 5px;
 }
+
+
+tr:link    {
+  text-decoration:  none;
+  font-weight:      bold;
+}
+
+tr:hover   {
+  text-decoration:  none;
+  font-weight:      bold;
+  background-color: snow;
+  color: darkslategray;
+  }
+
+  i {
+    cursor: pointer;
+  }
+
+  i:hover {
+    font-size: 24px;
+  }
