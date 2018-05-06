@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import './NavbarHeader.css'
 import Modal from './general/Modal'
 import ModalAddList from './general/ModalAddList'
+import SearchFeature from './general/SearchFeature'
 import './general/Modal.css'
 import { inject, observer } from 'mobx-react';
 import UserStore from '../stores/UserStore';
@@ -21,6 +22,11 @@ import UserStore from '../stores/UserStore';
     UserStore.isLogin = false
   }
 
+  submit = (e, payload) => {
+    e.preventDefault()
+    UserStore.searchData(payload)
+  }
+
   render () {
 
     let isLogin = 
@@ -29,7 +35,16 @@ import UserStore from '../stores/UserStore';
       </div>
     return (
       <nav className="container-navbar">
-        <div className="grid-item grow"><h4> Pass Manager</h4></div>
+        <div className="grid-item" 
+             style={{
+               padding: '8px'
+             }}>Pass Manager Apps</div>
+        <div className="grid-item search">
+        {
+            UserStore.isLogin?
+            <SearchFeature submit={this.submit}/> : ''
+        }  
+        </div>   
         <div className="grid-item modal-nav">
           {
             UserStore.isLogin?

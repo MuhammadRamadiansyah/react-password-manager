@@ -14,8 +14,20 @@ class AddListForm extends Component {
     }
   }
 
-  closeModal () {
-    var modal = document.getElementById('addListModal')
+  UNSAFE_componentWillUpdate (nextProps, prevState) {
+    if (nextProps.data) {
+      if (nextProps.data.email !== '') {
+        this.setState({
+          email: nextProps.data.email,
+          password: nextProps.data.password,
+          app: nextProps.data.app
+        })
+        nextProps.data.email = ''
+      }
+    }
+  }
+  closeModal = () => {
+    var modal = document.getElementById(`${this.props.title}ListModal`)
     modal.style.display = "none"
   }
 
@@ -113,14 +125,20 @@ class AddListForm extends Component {
       password: this.state.password,
       app: this.state.app
     }
-    UserStore.registerApp(localStorage.getItem('userKey'), payload)
+    document.getElementById("message").style.display = "none";
+    if (this.props.title === 'edit') {
+      UserStore.editApp(localStorage.getItem('userKey'), this.props.data.key, payload)
+    } else {
+      UserStore.registerApp(localStorage.getItem('userKey'), payload)
+    }
   }
 
   render() {
+
     return (
       <div>
         <div className="modal-header">
-          <h1> Add List Form </h1>
+          <h1> { this.props.title.toUpperCase() } LIST FORM</h1>
         </div>
         <form>
           <div className="container">

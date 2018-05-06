@@ -24,7 +24,7 @@ export default class Modal extends Component {
   render () {
     return (
       <div>
-        <button className="modalbtn" type="button" onClick={this.openModal}>Add List</button>
+        <button className="modalbtn" type="button" onClick={this.openModal}> Add List</button>
         <button type="button" 
                 className="cancelbtn" 
                 onClick={this.logout}
@@ -33,7 +33,7 @@ export default class Modal extends Component {
                 }}> Logout </button> 
         <div id="addListModal" className="modal scale-up-center">
           <div className="modal-content">
-            <AddListForm />    
+            <AddListForm title="add"/>    
           </div>
         </div>
       </div>

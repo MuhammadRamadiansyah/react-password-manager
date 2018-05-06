@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
 import './TableManager.css'
+import { inject, observer } from 'mobx-react';
 
-class TableManager extends Component {
+@inject('UserStore')
+@observer class TableManager extends Component {
   
   render() {
     let getData = this.props.user.apps.map( (element, index) => 
@@ -10,19 +12,24 @@ class TableManager extends Component {
         <th> {element.app } </th>
         <th> {element.email} </th>
         <th> {element.password} </th>
-        <th> Actions </th>
+        <th> 
+          <i className="fa fa-eye" onClick = {this.props.look.bind(this, element)}></i>
+          <span> | </span> 
+          <i className="fa fa-edit" onClick = {this.props.edit.bind(this, element)}></i>
+          <span> | </span> 
+          <i className="fa fa-trash" onClick = {this.props.delete.bind(this, element)}></i>
+        </th>
       </tr>
     )
     return (
-      <table>
-        
+      <table>        
         <thead className="header-table">
           <tr>
             <th>No</th>
             <th>Apps</th>
             <th>Email / Username</th>
             <th>Password</th>
-            <th>Action</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>

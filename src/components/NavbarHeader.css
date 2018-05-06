@@ -1,26 +1,28 @@
 .container-navbar {
   background: #2F4F4F;
-  height: 2rem;
+  height: 2.5rem;
   padding: 1rem;
   font-size: large;
   color: aliceblue;
+  margin: 0px;
+  display: grid;
+  grid-template-columns: auto auto auto;
+  width: 90%;
   margin: 0px auto;
-  display: flex;
-  align-items: center;
-  width: 100%;
 }
 
 .grid-item {
-  text-align: center;
-  padding: 0px auto;
-  margin: 0px 0px;
-  align-self: center;
+  text-align: start;
 }
 
 .modal-nav {
-  align-self: flex-end;
   margin-right: 0px;
   margin-left: auto;
+  padding: 3px;
+}
+
+.search {
+  text-align: center;
 }
 
 .grow {

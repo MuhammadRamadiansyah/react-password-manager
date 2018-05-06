@@ -21,6 +21,7 @@ label {
 }
 .actionButton {
   text-align: end;
+  margin-top: 10px;
 }
 
 #message {

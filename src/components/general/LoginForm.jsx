@@ -41,7 +41,11 @@ class LoginForm extends Component {
     e.preventDefault()
     this.closeModal()
     this.clearForm()
-    UserStore.login(this.state.email, this.state.password)
+    if (this.props.title) {
+      UserStore.lookPassword(this.state.email, this.state.password, this.props.data.key)
+    } else {
+      UserStore.login(this.state.email, this.state.password)
+    }
   }
 
   render() {
