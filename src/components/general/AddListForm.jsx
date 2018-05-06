@@ -1,20 +1,21 @@
 import React, { Component } from 'react'
-import './RegisterForm.css'
+import './AddListForm.css'
 import { inject } from 'mobx-react';
 import UserStore from '../../stores/UserStore';
 
 @inject('UserStore')
-class RegisterForm extends Component {
+class AddListForm extends Component {
   constructor () {
     super()
     this.state = {
       email: '',
-      password: ''
+      password: '',
+      app: ''
     }
   }
 
   closeModal () {
-    var modal = document.getElementById('myModal')
+    var modal = document.getElementById('addListModal')
     modal.style.display = "none"
   }
 
@@ -25,7 +26,7 @@ class RegisterForm extends Component {
     document.getElementById("message").style.display = "none";
   }
 
-  handleChangePassword =(e) => {
+  handleChangePassword = (e) => {
     this.setState({
       password: e.target.value
     }, () => {
@@ -68,13 +69,13 @@ class RegisterForm extends Component {
 
       // eslint-disable-next-line
       let specials = /[\'^£$%&*()}{@#~?><>,|=_+!-]/g;
-        if(this.state.password.match(specials)) {  
-          special.classList.remove("invalid");
-          special.classList.add("valid");
-        } else {
-          special.classList.remove("valid");
-          special.classList.add("invalid");
-        }
+      if(this.state.password.match(specials)) {  
+        special.classList.remove("invalid");
+        special.classList.add("valid");
+      } else {
+        special.classList.remove("valid");
+        special.classList.add("invalid");
+      }
       
       // Validate length
       if(this.state.password.length >= 8) {
@@ -84,16 +85,22 @@ class RegisterForm extends Component {
         length.classList.remove("valid");
         length.classList.add("invalid");
       }
-
-      
     })
     
+  }
+
+  handleChangeAppName = (e) => {
+    this.setState({
+      app: e.target.value
+    })
+    document.getElementById("message").style.display = "none";
   }
 
   clearForm () {
     this.setState({
       email: '',
-      password: ''
+      password: '',
+      app: ''
     })
   }
 
@@ -101,17 +108,24 @@ class RegisterForm extends Component {
     e.preventDefault()
     this.closeModal()
     this.clearForm()
-    UserStore.register(this.state.email, this.state.password)
+    let payload = {
+      email: this.state.email,
+      password: this.state.password,
+      app: this.state.app
+    }
+    UserStore.registerApp(localStorage.getItem('userKey'), payload)
   }
 
   render() {
     return (
       <div>
         <div className="modal-header">
-          <h1> Register Form </h1>
+          <h1> Add List Form </h1>
         </div>
         <form>
           <div className="container">
+            <label htmlFor="appName"><b>App Name</b></label>
+            <input type="text" placeholder="Enter your apps link" onChange={ this.handleChangeAppName } name="app" required  value ={this.state.app}/>
             <label htmlFor="email"><b>Email</b></label>
             <input type="text" placeholder="Enter Email" onChange={ this.handleChangeEmail } name="email" required  value ={this.state.email}/>
             <label htmlFor="psw"><b>Password</b></label>
@@ -135,4 +149,4 @@ class RegisterForm extends Component {
   }
 }
 
-export default RegisterForm
+export default AddListForm

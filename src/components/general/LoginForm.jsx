@@ -47,6 +47,9 @@ class LoginForm extends Component {
   render() {
     return (
       <div>
+        <div className="modal-header">
+          <h1> Login Form </h1>
+        </div>
         <form>
           <div className="container">
             <label htmlFor="email"><b>Email</b></label>

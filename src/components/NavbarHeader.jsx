@@ -1,39 +1,38 @@
 import React, { Component } from 'react'
 import './NavbarHeader.css'
 import Modal from './general/Modal'
+import ModalAddList from './general/ModalAddList'
 import './general/Modal.css'
 import { inject, observer } from 'mobx-react';
 import UserStore from '../stores/UserStore';
 
 @inject('UserStore')
-@observer  class NavbarHeader extends Component {
+@observer class NavbarHeader extends Component {
 
-  componentDidMount () {
-    if(localStorage.getItem('user')) {
+  UNSAFE_componentWillMount () {
+    if(localStorage.getItem('userKey')) {
+      UserStore.getUsersData(localStorage.getItem('userKey'))
+      UserStore.getAppsData(localStorage.getItem('userKey'))
     }
   }
 
   logout = () => {
-    localStorage.removeItem('user')
+    localStorage.removeItem('userKey')
+    UserStore.isLogin = false
   }
+
   render () {
 
     let isLogin = 
       <div>
-        <button type="button"> Add List </button> 
-        <button type="button" 
-                className="cancelbtn" 
-                onClick={this.logout}
-                style={{
-                  margin: '0px 10px'
-                }}> Logout </button> 
+        <ModalAddList logout = { this.logout }/>
       </div>
     return (
       <nav className="container-navbar">
         <div className="grid-item grow"><h4> Pass Manager</h4></div>
         <div className="grid-item modal-nav">
           {
-            localStorage.getItem('user')?
+            UserStore.isLogin?
             isLogin : <Modal/>
           }     
         </div>

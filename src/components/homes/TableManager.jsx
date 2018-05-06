@@ -2,13 +2,20 @@ import React, { Component } from 'react'
 import './TableManager.css'
 
 class TableManager extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {  };
-  }
+  
   render() {
+    let getData = this.props.user.apps.map( (element, index) => 
+      <tr key={ index }>
+        <th> {index + 1} </th>
+        <th> {element.app } </th>
+        <th> {element.email} </th>
+        <th> {element.password} </th>
+        <th> Actions </th>
+      </tr>
+    )
     return (
       <table>
+        
         <thead className="header-table">
           <tr>
             <th>No</th>
@@ -19,7 +26,7 @@ class TableManager extends Component {
           </tr>
         </thead>
         <tbody>
-
+          { getData }
         </tbody>
     </table>
     );

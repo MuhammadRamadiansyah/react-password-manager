@@ -30,6 +30,7 @@
     "html-webpack-plugin": "2.29.0",
     "jest": "20.0.4",
     "mobx": "^4.2.1",
+    "mobx-devtools-mst": "^0.9.14",
     "mobx-react": "^5.1.2",
     "object-assign": "4.1.1",
     "postcss-flexbugs-fixes": "3.2.0",

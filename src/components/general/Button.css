@@ -17,6 +17,7 @@ button {
 
 .cancelbtn {
   background-color: #f44336;
+  margin: 0px 10px;
 }
 
 button:hover {

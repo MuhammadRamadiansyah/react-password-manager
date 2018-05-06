@@ -9,9 +9,17 @@ input[type=text], input[type=password] {
 
 label {
   color: #000;
+  text-align: start;
+  float: left;
+  margin: 10px 0px;
+}
+
+.modal-header {
+  color: #000;
+  margin: 5px auto;
+  border: 0.3px solid azure;
 }
 
 .actionButton {
   text-align: end;
-  margin: 0px 5px;
 }
