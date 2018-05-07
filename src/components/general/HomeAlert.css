@@ -1,0 +1,16 @@
+h1 {
+  font-size:3vw;
+}
+
+p {
+ font-size:1vw;
+}
+
+.home-alert {
+  background-color: #F08080;
+  border: 1px solid red;
+  height: 20vw;
+  width: 70vw;
+  margin: 10px auto;
+  padding: 10px;
+}

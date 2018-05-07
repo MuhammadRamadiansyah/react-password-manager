@@ -2,7 +2,8 @@ button {
   background-color: #1E90FF; /* Green */
   border: 1px solid white;
   color: white;
-  padding: 8px 32px;
+  padding: 8px 10px;
+  width: 8vw;
   text-align: center;
   text-decoration: none;
   display: inline-block;

@@ -6,6 +6,7 @@ import UserStore from '../stores/UserStore';
 import AddListForm from './general/AddListForm.jsx'
 import './general/ModalAddList.css'
 import LoginForm from './general/LoginForm.jsx'
+import HomeAlert from './general/HomeAlert'
 import swal from 'sweetalert'
 
 @inject('UserStore')
@@ -82,7 +83,7 @@ import swal from 'sweetalert'
       <div>
          {
           UserStore.isLogin?
-          <TableManager { ...UserStore } delete={ this.deleteApp } edit= {this.editApp} look = {this.lookPassword}/> : <h1>harus login dulu</h1>
+          <TableManager { ...UserStore } delete={ this.deleteApp } edit= {this.editApp} look = {this.lookPassword}/> : <HomeAlert />
         }
         <div id="editListModal" className="modal scale-up-center">
           <div className="modal-content">

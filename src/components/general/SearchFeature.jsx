@@ -26,7 +26,7 @@ class SearchFeature extends Component {
             onChange ={this.handleSearch} 
             value= {this.search} 
             style = {{
-              width: '40%',
+              width: '13vw',
               margin: '0px 10px',
             }}/>
             <button type="button" onClick = { this.handleSubmit }> Search </button>
