@@ -38,6 +38,20 @@ label {
   font-size: 18px;
 }
 
+#editmessage {
+  display:none;
+  color: #000;
+  position: relative;
+  padding: 20px;
+  margin-top: 10px;
+  text-align: left;
+}
+
+#editmessage p {
+  padding: 10px 35px;
+  font-size: 18px;
+}
+
 .valid {
   color: green;
 }

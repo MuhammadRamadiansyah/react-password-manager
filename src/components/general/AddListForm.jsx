@@ -21,6 +21,8 @@ class AddListForm extends Component {
           email: nextProps.data.email,
           password: nextProps.data.realpsw,
           app: nextProps.data.app
+        }, () => {
+          this.passwordValidation()
         })
         nextProps.data.email = ''
       }
@@ -38,18 +40,28 @@ class AddListForm extends Component {
     document.getElementById("message").style.display = "none";
   }
 
-  handleChangePassword = (e) => {
-    this.setState({
-      password: e.target.value
-    }, () => {
-      document.getElementById("message").style.display = "block";
-
-      let letter = document.getElementById("letter");
-      let capital = document.getElementById("capital");
-      let number = document.getElementById("number");
-      let length = document.getElementById("length")
-      let special = document.getElementById("special")
-  
+  passwordValidation = () => {
+    let letter,
+          capital,
+          number,
+          length,
+          special
+      if (this.props.title !== 'edit') {
+        document.getElementById("message").style.display = "block";
+        letter = document.getElementById("letter");
+        capital = document.getElementById("capital");
+        number = document.getElementById("number");
+        length = document.getElementById("length")
+        special = document.getElementById("special")
+      } else {
+        document.getElementById("editmessage").style.display = "block";
+        letter = document.getElementById("editletter");
+        capital = document.getElementById("editcapital");
+        number = document.getElementById("editnumber");
+        length = document.getElementById("editlength")
+        special = document.getElementById("editspecial")
+      }
+      
       let lowerCaseLetters = /[a-z]/g;
       if(this.state.password.match(lowerCaseLetters)) {  
         letter.classList.remove("invalid");
@@ -97,8 +109,15 @@ class AddListForm extends Component {
         length.classList.remove("valid");
         length.classList.add("invalid");
       }
+  }
+
+  handleChangePassword = (e) => {
+    this.setState({
+      password: e.target.value
+    }, () => {
+      this.passwordValidation()
     })
-    
+
   }
 
   handleChangeAppName = (e) => {
@@ -154,14 +173,25 @@ class AddListForm extends Component {
             </div>
           </div>
         </form>
-        <div id="message">
-          <h3>Password must contain the following:</h3>
-          <p id="letter" className="invalid">A <b>lowercase</b> letter</p>
-          <p id="capital" className="invalid">A <b>capital (uppercase)</b> letter</p>
-          <p id="number" className="invalid">A <b>number</b></p>
-          <p id="length" className="invalid">Minimum <b>8 characters</b></p>
-          <p id="special" className="invalid">A <b>special character</b></p>
-        </div>
+        {
+          this.props.title !== 'edit'?
+          <div id="message">
+            <h3>Password must contain the following:</h3>
+            <p id="letter" className="invalid">A <b>lowercase</b> letter</p>
+            <p id="capital" className="invalid">A <b>capital (uppercase)</b> letter</p>
+            <p id="number" className="invalid">A <b>number</b></p>
+            <p id="length" className="invalid">Minimum <b>8 characters</b></p>
+            <p id="special" className="invalid">A <b>special character</b></p>
+          </div> : <div id="editmessage">
+            <h3>Password must contain the following:</h3>
+            <p id="editletter" className="invalid">A <b>lowercase</b> letter</p>
+            <p id="editcapital" className="invalid">A <b>capital (uppercase)</b> letter</p>
+            <p id="editnumber" className="invalid">A <b>number</b></p>
+            <p id="editlength" className="invalid">Minimum <b>8 characters</b></p>
+            <p id="editspecial" className="invalid">A <b>special character</b></p>
+          </div>
+        }
+        
       </div>
     );
   }
