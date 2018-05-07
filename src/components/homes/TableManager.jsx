@@ -29,7 +29,7 @@ import UserStore from '../../stores/UserStore';
         <thead className="header-table">
           <tr>
             <th>No</th>
-            <th>Apps</th>
+            <th>URL</th>
             <th>Email</th>
             <th>Password</th>
             <th>Created At</th>

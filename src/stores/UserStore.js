@@ -40,7 +40,7 @@ class UserStore {
     var regex = new RegExp(payload, "g")
     let searchArr = []
     this.user.apps.forEach(element => {
-      if (element.app.match(regex) || element.email.match(regex) || element.realPassword.match(regex)) {
+      if (element.app.match(regex)) {
         searchArr.push(element)
       }
     })

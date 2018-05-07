@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import './AddListForm.css'
 import { inject } from 'mobx-react';
 import UserStore from '../../stores/UserStore';
+import swal from 'sweetalert'
 
 @inject('UserStore')
 class AddListForm extends Component {
@@ -22,7 +23,6 @@ class AddListForm extends Component {
           password: nextProps.data.realpsw,
           app: nextProps.data.app
         }, () => {
-          this.passwordValidation()
         })
         nextProps.data.email = ''
       }
@@ -42,10 +42,10 @@ class AddListForm extends Component {
 
   passwordValidation = () => {
     let letter,
-          capital,
-          number,
-          length,
-          special
+        capital,
+        number,
+        length,
+        special
       if (this.props.title !== 'edit') {
         document.getElementById("message").style.display = "block";
         letter = document.getElementById("letter");
@@ -135,6 +135,21 @@ class AddListForm extends Component {
     })
   }
 
+  validatePassword = (password) => {
+    let lowerCaseLetters = /[a-z]/g;
+    let upperCaseLetters = /[A-Z]/g;
+    let numbers = /[0-9]/g;
+    // eslint-disable-next-line
+    let specials = /[\'^£$%&*()}{@#~?><>,|=_+!-]/g;
+
+    if (password.match(lowerCaseLetters) && password.match(upperCaseLetters) && password.match(numbers) && password.match(specials) && password.length >= 8) {
+      return true
+    } else {
+      return false
+    }
+      
+  }
+
   handleSubmit = (e) => {
     e.preventDefault()
     this.closeModal()
@@ -145,11 +160,16 @@ class AddListForm extends Component {
       app: this.state.app
     }
     document.getElementById("message").style.display = "none";
-    if (this.props.title === 'edit') {
-      UserStore.editApp(localStorage.getItem('userKey'), this.props.data.key, payload)
+    if (this.validatePassword(payload.password)) {
+      if (this.props.title === 'edit') {
+        UserStore.editApp(localStorage.getItem('userKey'), this.props.data.key, payload)
+      } else {
+        UserStore.registerApp(localStorage.getItem('userKey'), payload)
+      }
     } else {
-      UserStore.registerApp(localStorage.getItem('userKey'), payload)
+      swal("Oops!", "Password not too strong!", "error")
     }
+    
   }
 
   render() {
