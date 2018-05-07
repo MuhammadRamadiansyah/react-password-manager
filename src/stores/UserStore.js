@@ -1,5 +1,5 @@
 import { observable, computed } from 'mobx'
-import {db} from '../firebase'
+import {db, firebase} from '../firebase'
 import swal from 'sweetalert'
 
 
@@ -20,7 +20,7 @@ class UserStore {
 
   getAppsData = (key) => {
     this.user.apps = []
-    db.ref('users/' + key + '/apps').on('value', (snap) => {
+    db.ref('users/' + key + '/apps').once('value', (snap) => {
       snap.forEach(element => {
         let getApp = element.val()
         getApp['.key'] = element.key
@@ -59,6 +59,8 @@ class UserStore {
   }
 
   registerApp = (key, payload) => {
+    payload.createdAt =  firebase.database.ServerValue.TIMESTAMP
+    payload.updatedAt = firebase.database.ServerValue.TIMESTAMP
     db.ref('users/' + key + '/apps').push(payload)
     this.getAppsData(key)
     swal({
@@ -69,6 +71,7 @@ class UserStore {
   }
 
   editApp = (key, keyApp, payload) => {
+    payload.updatedAt = firebase.database.ServerValue.TIMESTAMP
     db.ref('users/' + key + '/apps/' + keyApp).update(payload)
     swal({
       title: "Good job!",
@@ -108,7 +111,6 @@ class UserStore {
 
   lookPassword = (email, password, appKey) => {
     let loginCond = false
-    console.log(password)
     db.ref('users').once('value', (snapshot) => {
       snapshot.forEach(element => {
         let getUser = element.val()
@@ -137,6 +139,16 @@ class UserStore {
     }
     data.password = hiddenPsw
     this.user.apps.splice(index, 1, data)
+  }
+
+  getDate = (date) => {
+    let newDate = new Date(date)
+    let monthArr = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+    let year = newDate.getFullYear()
+    let month = monthArr[newDate.getMonth()]
+    let day = newDate.getDate()
+    newDate = `${month} ${day}, ${year}`
+    return newDate
   }
 
   @computed

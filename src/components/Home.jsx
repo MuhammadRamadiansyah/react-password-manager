@@ -17,7 +17,8 @@ import swal from 'sweetalert'
       email: '',
       password: '',
       app: '',
-      key: ''
+      key: '',
+      realpsw: ''
     }
   }
   
@@ -64,13 +65,14 @@ import swal from 'sweetalert'
 
   lookPassword = (app) => {
     let lowerCaseLetters = /[a-z]/g
-    this.setState({
-      email: app.email,
-      password: app.password,
-      app: app.app,
-      key: app['.key']
-    })
+    
     if (!app.password.match(lowerCaseLetters)) {
+      this.setState({
+        email: app.email,
+        password: app.password,
+        app: app.app,
+        key: app['.key']
+      })
       var loginModal = document.getElementById('loginModal')
       loginModal.style.display = "block"
     } else {

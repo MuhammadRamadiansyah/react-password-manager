@@ -11,4 +11,5 @@ const firebaseApp = Firebase.initializeApp({
 
 // Export the database for components to use.
 // If you want to get fancy, use mixins or provide / inject to avoid redundant imports.
+export const firebase = Firebase
 export const db = firebaseApp.database()

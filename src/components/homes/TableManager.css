@@ -3,8 +3,7 @@ table {
   margin: 30px auto;
   font-family: arial, sans-serif;
   border-collapse: collapse;
-  width: 80%;
-  min-width: 10rem;
+  width: 90vw;
 }
 
 .header-table {
