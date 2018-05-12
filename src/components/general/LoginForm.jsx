@@ -3,7 +3,6 @@ import './LoginForm.css'
 import { inject } from 'mobx-react';
 import UserStore from '../../stores/UserStore';
 
-@inject('UserStore')
 class LoginForm extends Component {
   constructor () {
     super()
@@ -14,14 +13,14 @@ class LoginForm extends Component {
   }
   closeModal () {
     var modal = document.getElementById('loginModal')
-    modal.style.display = "none"
+    // modal.style.display = "none"
   }
 
   handleChangeEmail = (e) => {
     this.setState({
       email: e.target.value
     })
-    document.getElementById("message").style.display = "none";
+    // document.getElementById("message").style.display = "none";
   }
 
   handleChangePassword =(e) => {
@@ -34,7 +33,7 @@ class LoginForm extends Component {
     this.setState({
       email: '',
       password: ''
-    })
+    }) 
   }
 
   handleSubmit = (e) => {
@@ -57,9 +56,9 @@ class LoginForm extends Component {
         <form>
           <div className="container">
             <label htmlFor="email"><b>Email</b></label>
-            <input type="text" placeholder="Enter Email" onChange={ this.handleChangeEmail } name="email" required  value ={this.state.email}/>
+            <input type="text" id="loginEmail" placeholder="Enter Email" onChange={ this.handleChangeEmail } name="email" required  value ={this.state.email}/>
             <label htmlFor="psw"><b>Password</b></label>
-            <input type="password" placeholder="Enter Password" onChange={ this.handleChangePassword } name="password" required value ={this.state.password}/>
+            <input type="password" id="loginPassword" placeholder="Enter Password" onChange={ this.handleChangePassword } name="password" required value ={this.state.password}/>
             <div className="container actionButton">
               <button type="button" onClick={ this.closeModal } className="cancelbtn">Cancel</button>
               <button type="submit" onClick= { this.handleSubmit } >Submit</button>

@@ -1,38 +1,49 @@
 import { observable, computed } from 'mobx'
 import {db, firebase} from '../firebase'
 import swal from 'sweetalert'
-
+import localStorageMock from '../LocalStorageMock'
 
 class UserStore {
   @observable user = {
     email: '',
     apps: []
   }
-
+  @observable userKey = ''
+  @observable newEmail = ''
+  @observable newPassword = ''
+  
   @observable isLogin = false
 
   getUsersData = (key) => {
-    db.ref('users/' + key).on('value', (snapshot) => {
-      this.user.email = snapshot.val().email
-      this.isLogin = true
-    })
-  }
-
-  getAppsData = (key) => {
-    this.user.apps = []
-    db.ref('users/' + key + '/apps').once('value', (snap) => {
-      snap.forEach(element => {
-        let getApp = element.val()
-        getApp['.key'] = element.key
-        let hiddenPsw = ''
-        for (let i = 0; i < getApp.password.length; i++) {
-          hiddenPsw += '*'
-        }
-        getApp.realPassword = getApp.password
-        getApp.password = hiddenPsw
-        this.user.apps.push(getApp)
+    return new Promise((resolve, reject) => {
+      db.ref('users/' + key).on('value', (snapshot) => {
+        this.user.email = snapshot.val().email
+        this.isLogin = true
+        resolve()
       })
     })
+  }
+  getAppsData = (key) => {
+
+    return new Promise((resolve, reject) => {
+      this.user.apps = []
+      db.ref('users/' + key + '/apps').once('value', (snap) => {
+        snap.forEach(element => {
+          let getApp = element.val()
+          getApp['.key'] = element.key
+          let hiddenPsw = ''
+          for (let i = 0; i < getApp.password.length; i++) {
+            hiddenPsw += '*'
+          }
+          getApp.realPassword = getApp.password
+          getApp.password = hiddenPsw
+          this.user.apps.push(getApp)
+        })
+        resolve()
+        reject('error')
+      })
+    })
+    
   }
 
   searchData = (payload) => {
@@ -87,25 +98,34 @@ class UserStore {
   }
 
   login = (email, password) => {
-    let loginCond = false
-    db.ref('users').once('value', (snapshot) => {
-      snapshot.forEach(element => {
-        let getUser = element.val()
-        if (getUser.email === email && getUser.password === password) {
-          localStorage.setItem('userKey', element.key)
-          this.getUsersData(localStorage.getItem('userKey'))
-          this.getAppsData(localStorage.getItem('userKey'))
-          swal({
-            title: "Good job!",
-            text: "You are successfully login!",
-            icon: "success",
-          })
-          loginCond = true
-        } 
+    return new Promise((resolve, reject) => {
+      let loginCond = false
+      db.ref('users').once('value', (snapshot) => {
+        snapshot.forEach((element) => {
+          let getUser = element.val()
+          if (getUser.email === email && getUser.password === password) {
+            localStorageMock.setItem('userKey', element.key)
+            this.userKey = element.key
+            this.getUsersData(localStorageMock.getItem('userKey'))
+                .then( async () => {
+                  await this.getAppsData(localStorageMock.getItem('userKey'))
+                  swal({
+                    title: "Good job!",
+                    text: "You are successfully login!",
+                    icon: "success",
+                  })
+                  loginCond = true
+                  resolve()
+                })
+                .catch((err) => {
+                  console.log('err')
+                })
+          } 
+        })
+        if(!loginCond) {
+          swal("Oops!", "Username or password is wrong!", "error")
+        }
       })
-      if(!loginCond) {
-        swal("Oops!", "Username or password is wrong!", "error")
-      }
     })
   }
 
@@ -149,11 +169,6 @@ class UserStore {
     let day = newDate.getDate()
     newDate = `${month} ${day}, ${year}`
     return newDate
-  }
-
-  @computed
-  get appCount() {
-    return this.registeredApps.length;
   }
 }
 

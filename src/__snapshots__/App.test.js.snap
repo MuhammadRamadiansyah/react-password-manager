@@ -1,0 +1,124 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Register and Login form test Register form all button are works email handle change, password handle change, and submit are works 1`] = `
+<div>
+  <div
+    className="modal-header"
+  >
+    <h1>
+       Register Form 
+    </h1>
+  </div>
+  <form>
+    <div
+      className="container"
+    >
+      <label
+        htmlFor="email"
+      >
+        <b>
+          Email
+        </b>
+      </label>
+      <input
+        id="newEmail"
+        name="email"
+        onChange={[Function]}
+        placeholder="Enter Email"
+        required={true}
+        type="text"
+        value=""
+      />
+      <label
+        htmlFor="psw"
+      >
+        <b>
+          Password
+        </b>
+      </label>
+      <input
+        id="newPassword"
+        name="password"
+        onChange={[Function]}
+        placeholder="Enter Password"
+        required={true}
+        type="password"
+        value=""
+      />
+      <div
+        className="container actionButton"
+      >
+        <button
+          className="cancelbtn"
+          id="cancelBtn"
+          onClick={[Function]}
+          type="button"
+        >
+          Cancel
+        </button>
+        <button
+          id="submitBtn"
+          onClick={[Function]}
+          type="submit"
+        >
+          Submit
+        </button>
+      </div>
+    </div>
+  </form>
+  <div
+    id="message"
+  >
+    <h3>
+      Password must contain the following:
+    </h3>
+    <p
+      className="invalid"
+      id="letter"
+    >
+      A 
+      <b>
+        lowercase
+      </b>
+       letter
+    </p>
+    <p
+      className="invalid"
+      id="capital"
+    >
+      A 
+      <b>
+        capital (uppercase)
+      </b>
+       letter
+    </p>
+    <p
+      className="invalid"
+      id="number"
+    >
+      A 
+      <b>
+        number
+      </b>
+    </p>
+    <p
+      className="invalid"
+      id="length"
+    >
+      Minimum 
+      <b>
+        8 characters
+      </b>
+    </p>
+    <p
+      className="invalid"
+      id="special"
+    >
+      A 
+      <b>
+        special character
+      </b>
+    </p>
+  </div>
+</div>
+`;

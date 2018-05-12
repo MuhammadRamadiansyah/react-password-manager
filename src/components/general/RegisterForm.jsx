@@ -1,9 +1,7 @@
 import React, { Component } from 'react'
 import './RegisterForm.css'
-import { inject } from 'mobx-react';
 import UserStore from '../../stores/UserStore';
 
-@inject('UserStore')
 class RegisterForm extends Component {
   constructor () {
     super()
@@ -15,75 +13,78 @@ class RegisterForm extends Component {
 
   closeModal () {
     var modal = document.getElementById('myModal')
-    modal.style.display = "none"
+    // modal.style.display = "none"
   }
 
   handleChangeEmail = (e) => {
     this.setState({
-      email: e.target.value
+      [e.target.name]: e.target.value
+    }, () => {
+      UserStore.newEmail = this.state.email
     })
-    document.getElementById("message").style.display = "none";
+    // document.getElementById("message").style.display = "none";
   }
 
   handleChangePassword =(e) => {
     this.setState({
       password: e.target.value
     }, () => {
-      document.getElementById("message").style.display = "block";
+      UserStore.newPassword = this.state.password
+      // document.getElementById("message").style.display = "block";
 
-      let letter = document.getElementById("letter");
-      let capital = document.getElementById("capital");
-      let number = document.getElementById("number");
-      let length = document.getElementById("length")
-      let special = document.getElementById("special")
+      // let letter = document.getElementById("letter");
+      // let capital = document.getElementById("capital");
+      // let number = document.getElementById("number");
+      // let length = document.getElementById("length")
+      // let special = document.getElementById("special")
   
-      let lowerCaseLetters = /[a-z]/g;
-      if(this.state.password.match(lowerCaseLetters)) {  
-        letter.classList.remove("invalid");
-        letter.classList.add("valid");
-      } else {
-        letter.classList.remove("valid");
-        letter.classList.add("invalid");
-      }
+      // let lowerCaseLetters = /[a-z]/g;
+      // if(this.state.password.match(lowerCaseLetters)) {  
+      //   letter.classList.remove("invalid");
+      //   letter.classList.add("valid");
+      // } else {
+      //   letter.classList.remove("valid");
+      //   letter.classList.add("invalid");
+      // }
       
-      // Validate capital letters
-      let upperCaseLetters = /[A-Z]/g;
-      if(this.state.password.match(upperCaseLetters)) {  
-        capital.classList.remove("invalid");
-        capital.classList.add("valid");
-      } else {
-        capital.classList.remove("valid");
-        capital.classList.add("invalid");
-      }
+      // // Validate capital letters
+      // let upperCaseLetters = /[A-Z]/g;
+      // if(this.state.password.match(upperCaseLetters)) {  
+      //   capital.classList.remove("invalid");
+      //   capital.classList.add("valid");
+      // } else {
+      //   capital.classList.remove("valid");
+      //   capital.classList.add("invalid");
+      // }
   
-      // Validate numbers
-      let numbers = /[0-9]/g;
-      if(this.state.password.match(numbers)) {  
-        number.classList.remove("invalid");
-        number.classList.add("valid");
-      } else {
-        number.classList.remove("valid");
-        number.classList.add("invalid");
-      }
+      // // Validate numbers
+      // let numbers = /[0-9]/g;
+      // if(this.state.password.match(numbers)) {  
+      //   number.classList.remove("invalid");
+      //   number.classList.add("valid");
+      // } else {
+      //   number.classList.remove("valid");
+      //   number.classList.add("invalid");
+      // }
 
-      // eslint-disable-next-line
-      let specials = /[\'^£$%&*()}{@#~?><>,|=_+!-]/g;
-        if(this.state.password.match(specials)) {  
-          special.classList.remove("invalid");
-          special.classList.add("valid");
-        } else {
-          special.classList.remove("valid");
-          special.classList.add("invalid");
-        }
+      // // eslint-disable-next-line
+      // let specials = /[\'^£$%&*()}{@#~?><>,|=_+!-]/g;
+      //   if(this.state.password.match(specials)) {  
+      //     special.classList.remove("invalid");
+      //     special.classList.add("valid");
+      //   } else {
+      //     special.classList.remove("valid");
+      //     special.classList.add("invalid");
+      //   }
       
-      // Validate length
-      if(this.state.password.length >= 8) {
-        length.classList.remove("invalid");
-        length.classList.add("valid");
-      } else {
-        length.classList.remove("valid");
-        length.classList.add("invalid");
-      }
+      // // Validate length
+      // if(this.state.password.length >= 8) {
+      //   length.classList.remove("invalid");
+      //   length.classList.add("valid");
+      // } else {
+      //   length.classList.remove("valid");
+      //   length.classList.add("invalid");
+      // }
 
       
     })
@@ -113,12 +114,12 @@ class RegisterForm extends Component {
         <form>
           <div className="container">
             <label htmlFor="email"><b>Email</b></label>
-            <input type="text" placeholder="Enter Email" onChange={ this.handleChangeEmail } name="email" required  value ={this.state.email}/>
+            <input type="text" id="newEmail" placeholder="Enter Email" onChange={ this.handleChangeEmail } name="email" required  value ={this.state.email}/>
             <label htmlFor="psw"><b>Password</b></label>
-            <input type="password" placeholder="Enter Password" onChange={ this.handleChangePassword } name="password" required value ={this.state.password}/>
+            <input type="password" id="newPassword" placeholder="Enter Password" onChange={ this.handleChangePassword } name="password" required value ={this.state.password}/>
             <div className="container actionButton">
-              <button type="button" onClick={ this.closeModal } className="cancelbtn">Cancel</button>
-              <button type="submit" onClick= { this.handleSubmit } >Submit</button>
+              <button type="button" id="cancelBtn" onClick={ this.closeModal } className="cancelbtn">Cancel</button>
+              <button type="submit" id="submitBtn" onClick= { this.handleSubmit } >Submit</button>
             </div>
           </div>
         </form>

@@ -10,27 +10,27 @@ export default class Modal extends Component {
     var loginModal = document.getElementById('loginModal')
     window.onclick = function(event) {
       if (event.target === modal) {
-        modal.style.display = "none";
+        // modal.style.display = "none";
       } else if (event.target === loginModal) {
-        loginModal.style.display = "none";
+        // loginModal.style.display = "none";
       }
     }
   }
   openModal = () => {
     var modal = document.getElementById('myModal')
-    modal.style.display = "block"
+    // modal.style.display = "block"
   }
 
   openLoginModal = () => {
     var modal = document.getElementById('loginModal')
-    modal.style.display = "block"
+    // modal.style.display = "block"
   }
 
   render () {
     return (
       <div>
-        <button className="modalbtn" type="button" onClick={this.openModal}>Register</button>
-        <button className="modalbtn" type="button" onClick={this.openLoginModal}>Login</button>
+        <button className="modalbtn" id="openRegister" type="button" onClick={this.openModal}>Register</button>
+        <button className="modalbtn" id="openLogin" type="button" onClick={this.openLoginModal}>Login</button>
         <div id="myModal" className="modal scale-up-center">
           <div className="modal-content">
             <RegisterForm />    

@@ -7,14 +7,14 @@ import './general/Modal.css'
 import { inject, observer } from 'mobx-react';
 import UserStore from '../stores/UserStore';
 import swal from 'sweetalert'
+import localStorageMock from '../LocalStorageMock'
 
-@inject('UserStore')
 @observer class NavbarHeader extends Component {
 
   UNSAFE_componentWillMount () {
-    if(localStorage.getItem('userKey')) {
-      UserStore.getUsersData(localStorage.getItem('userKey'))
-      UserStore.getAppsData(localStorage.getItem('userKey'))
+    if(localStorageMock.getItem('userKey')) {
+      UserStore.getUsersData(localStorageMock.getItem('userKey'))
+      UserStore.getAppsData(localStorageMock.getItem('userKey'))
     }
   }
 
@@ -31,7 +31,7 @@ import swal from 'sweetalert'
         swal("Success logout!", {
           icon: "success",
         });
-        localStorage.removeItem('userKey')
+        localStorageMock.removeItem('userKey')
         UserStore.isLogin = false
       } else {
         swal("You are still login!");
