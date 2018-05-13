@@ -48,11 +48,16 @@ describe('<Home /> render', async () => {
   let testKey = '-LBj_XMYcT_4_7tpJymu',
       testApp
   
-  beforeEach( async () => {
+  beforeAll( async () => {
     await UserStore.login('rama2@gmail.com', 'Rama12345')
     testApp = UserStore.user.apps[UserStore.user.apps.length-1]
+    await UserStore.registerApp(testKey, {
+      email: 'tes@gmail.com',
+      password: 'blabBla12!22',
+      app: 'apalah'
+    })
   })
-  it('Home alert testing element', () => {
+  test('Home alert testing element', () => {
     const component = renderer.create(<HomeAlert/>)
     expect(component).toMatchSnapshot()
   })
@@ -69,8 +74,11 @@ describe('<Home /> render', async () => {
     expect(deleteApp).toBeCalled()
   })
 
-  afterEach(() => {
+  afterAll( async() => {
     localStorageMock.removeItem('userKey')
+    const deleteApp = jest.spyOn(instance, 'deleteApp')
+    await wrapper.instance().deleteApp(testApp)
+    expect(deleteApp).toBeCalled()
   })
 })
 
@@ -434,7 +442,7 @@ describe('test each of components element', () => {
     expect(logoutMethod).toBeCalled()
   })
 
-  it('<LoginForm /> component', async () => {
+  test('<LoginForm /> component', async () => {
     const component = renderer.create(<LoginForm />)
     const wrapper = shallow(<LoginForm />)
     expect(wrapper.containsAllMatchingElements([
@@ -443,7 +451,6 @@ describe('test each of components element', () => {
       <h1 />,
       <div />
     ]))
-    expect(component).toMatchSnapshot()
 
     wrapper.find('#loginEmail').simulate('change', 
     {target: {name: 'email', value:'rama2@gmail.com'}})
@@ -455,31 +462,29 @@ describe('test each of components element', () => {
     const close = jest.spyOn(instance, 'closeModal')
     const clear = jest.spyOn(instance, 'clearForm')
     await wrapper.instance().handleSubmit({ preventDefault() {} })
-    // expect(close).toHaveBeenCalledTimes(1)
-    // expect(clear).toHaveBeenCalledTimes(1)
-    // expect(submit).toBeCalled()
+    expect(close).toHaveBeenCalledTimes(1)
+    expect(clear).toHaveBeenCalledTimes(1)
+    expect(submit).toBeCalled()
+    expect(component).toMatchSnapshot()
   })
 
-  // it('<AddListForm /> component', async () => {
-  //   const wrapper = shallow(<AddListForm title="add"/>)
-  //   const instance = wrapper.instance()
-  //   const submit = jest.spyOn(instance, 'handleSubmit')
-  //   const close = jest.spyOn(instance, 'closeModal')
-  //   const clear = jest.spyOn(instance, 'clearForm')
+  it('<AddListForm /> component', async () => {
+    const wrapper = shallow(<AddListForm title="add"/>)
+    const instance = wrapper.instance()
+    const submit = jest.spyOn(instance, 'handleSubmit')
+    const close = jest.spyOn(instance, 'closeModal')
+    const clear = jest.spyOn(instance, 'clearForm')
 
-  //   // const instance = wrapper.instance()
-  //   wrapper.find('#appEmail').simulate('change', 
-  //   {target: {name: 'email', value:'rama2appss@gmail.com'}})
-  //   wrapper.find('#appPassword').simulate('change', 
-  //   {target: {name: 'password', value:'Rama12345App!'}})
-  //   wrapper.find('#appName').simulate('change', 
-  //   {target: {name: 'app', value:'Jest23'}})
+    wrapper.find('#appEmail').simulate('change', 
+    {target: {name: 'email', value:'rama2appss@gmail.com'}})
+    wrapper.find('#appPassword').simulate('change', 
+    {target: {name: 'password', value:'Rama12345App!'}})
+    wrapper.find('#appName').simulate('change', 
+    {target: {name: 'app', value:'Jest23'}})
     
-  //   // await wrapper.instance().handleSubmit({ preventDefault() {} })
-  //   // expect(close).toHaveBeenCalledTimes(1)
-  //   // expect(clear).toHaveBeenCalledTimes(1)
-  //   // expect(submit).toBeCalled()
-  //   console.log(UserStore.user.apps[UserStore.user.apps.length-1])
-  //   // await UserStore.deleteApp(testKey, UserStore.user.apps[UserStore.user.apps.length-1]['.key'])
-  // })
+    await wrapper.instance().handleSubmit({ preventDefault() {} })
+    expect(close).toHaveBeenCalledTimes(1)
+    expect(clear).toHaveBeenCalledTimes(1)
+    expect(submit).toBeCalled()
+  })
 })

@@ -38,13 +38,13 @@ class LoginForm extends Component {
 
   handleSubmit = async (e) => {
     e.preventDefault()
-    this.closeModal()
-    this.clearForm()
     if (this.props.title) {
       await UserStore.lookPassword(this.state.email, this.state.password, this.props.data.key)
     } else {
       await UserStore.login(this.state.email, this.state.password)
     }
+    this.closeModal()
+    this.clearForm()
   }
 
   render() {

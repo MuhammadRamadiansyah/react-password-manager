@@ -5,10 +5,7 @@ import UserStore from '../../stores/UserStore';
 
 @inject('UserStore')
 @observer class TableManager extends Component {
-  
-  editApplication = (element) => {
-    this.props.edit(element)
-  }
+
   render() {
     let getData = this.props.user.apps.map( (element, index) => 
       <tr key={ index }>
@@ -21,7 +18,7 @@ import UserStore from '../../stores/UserStore';
         <th> 
           <i className="fa fa-eye" onClick = {this.props.look.bind(this, element)}></i>
           <span> | </span> 
-          <i className="fa fa-edit" id ="editApp" onClick = {this.editApplication(element)}></i>
+          <i className="fa fa-edit" id ="editApp" onClick = {this.props.edit.bind(this, element)}></i>
           <span> | </span> 
           <i className="fa fa-trash" onClick = {this.props.delete.bind(this, element)}></i>
         </th>
