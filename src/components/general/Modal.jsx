@@ -10,20 +10,20 @@ export default class Modal extends Component {
     var loginModal = document.getElementById('loginModal')
     window.onclick = function(event) {
       if (event.target === modal) {
-        // modal.style.display = "none";
+        modal.style.display = "none";
       } else if (event.target === loginModal) {
-        // loginModal.style.display = "none";
+        loginModal.style.display = "none";
       }
     }
   }
   openModal = () => {
     var modal = document.getElementById('myModal')
-    // modal.style.display = "block"
+    modal.style.display = "block"
   }
 
   openLoginModal = () => {
     var modal = document.getElementById('loginModal')
-    // modal.style.display = "block"
+    modal.style.display = "block"
   }
 
   render () {

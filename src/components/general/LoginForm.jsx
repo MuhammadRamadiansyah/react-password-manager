@@ -13,14 +13,14 @@ class LoginForm extends Component {
   }
   closeModal () {
     var modal = document.getElementById('loginModal')
-    // modal.style.display = "none"
+    modal.style.display = "none"
   }
 
   handleChangeEmail = (e) => {
     this.setState({
       email: e.target.value
     })
-    // document.getElementById("message").style.display = "none";
+    document.getElementById("message").style.display = "none";
   }
 
   handleChangePassword =(e) => {

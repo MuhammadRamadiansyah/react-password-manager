@@ -13,7 +13,7 @@ class RegisterForm extends Component {
 
   closeModal () {
     var modal = document.getElementById('myModal')
-    // modal.style.display = "none"
+    modal.style.display = "none"
   }
 
   handleChangeEmail = (e) => {
@@ -22,7 +22,7 @@ class RegisterForm extends Component {
     }, () => {
       UserStore.newEmail = this.state.email
     })
-    // document.getElementById("message").style.display = "none";
+    document.getElementById("message").style.display = "none";
   }
 
   handleChangePassword =(e) => {
@@ -30,61 +30,61 @@ class RegisterForm extends Component {
       password: e.target.value
     }, () => {
       UserStore.newPassword = this.state.password
-      // document.getElementById("message").style.display = "block";
+      document.getElementById("message").style.display = "block";
 
-      // let letter = document.getElementById("letter");
-      // let capital = document.getElementById("capital");
-      // let number = document.getElementById("number");
-      // let length = document.getElementById("length")
-      // let special = document.getElementById("special")
+      let letter = document.getElementById("letter");
+      let capital = document.getElementById("capital");
+      let number = document.getElementById("number");
+      let length = document.getElementById("length")
+      let special = document.getElementById("special")
   
-      // let lowerCaseLetters = /[a-z]/g;
-      // if(this.state.password.match(lowerCaseLetters)) {  
-      //   letter.classList.remove("invalid");
-      //   letter.classList.add("valid");
-      // } else {
-      //   letter.classList.remove("valid");
-      //   letter.classList.add("invalid");
-      // }
+      let lowerCaseLetters = /[a-z]/g;
+      if(this.state.password.match(lowerCaseLetters)) {  
+        letter.classList.remove("invalid");
+        letter.classList.add("valid");
+      } else {
+        letter.classList.remove("valid");
+        letter.classList.add("invalid");
+      }
       
-      // // Validate capital letters
-      // let upperCaseLetters = /[A-Z]/g;
-      // if(this.state.password.match(upperCaseLetters)) {  
-      //   capital.classList.remove("invalid");
-      //   capital.classList.add("valid");
-      // } else {
-      //   capital.classList.remove("valid");
-      //   capital.classList.add("invalid");
-      // }
+      // Validate capital letters
+      let upperCaseLetters = /[A-Z]/g;
+      if(this.state.password.match(upperCaseLetters)) {  
+        capital.classList.remove("invalid");
+        capital.classList.add("valid");
+      } else {
+        capital.classList.remove("valid");
+        capital.classList.add("invalid");
+      }
   
-      // // Validate numbers
-      // let numbers = /[0-9]/g;
-      // if(this.state.password.match(numbers)) {  
-      //   number.classList.remove("invalid");
-      //   number.classList.add("valid");
-      // } else {
-      //   number.classList.remove("valid");
-      //   number.classList.add("invalid");
-      // }
+      // Validate numbers
+      let numbers = /[0-9]/g;
+      if(this.state.password.match(numbers)) {  
+        number.classList.remove("invalid");
+        number.classList.add("valid");
+      } else {
+        number.classList.remove("valid");
+        number.classList.add("invalid");
+      }
 
-      // // eslint-disable-next-line
-      // let specials = /[\'^£$%&*()}{@#~?><>,|=_+!-]/g;
-      //   if(this.state.password.match(specials)) {  
-      //     special.classList.remove("invalid");
-      //     special.classList.add("valid");
-      //   } else {
-      //     special.classList.remove("valid");
-      //     special.classList.add("invalid");
-      //   }
+      // eslint-disable-next-line
+      let specials = /[\'^£$%&*()}{@#~?><>,|=_+!-]/g;
+        if(this.state.password.match(specials)) {  
+          special.classList.remove("invalid");
+          special.classList.add("valid");
+        } else {
+          special.classList.remove("valid");
+          special.classList.add("invalid");
+        }
       
-      // // Validate length
-      // if(this.state.password.length >= 8) {
-      //   length.classList.remove("invalid");
-      //   length.classList.add("valid");
-      // } else {
-      //   length.classList.remove("valid");
-      //   length.classList.add("invalid");
-      // }
+      // Validate length
+      if(this.state.password.length >= 8) {
+        length.classList.remove("invalid");
+        length.classList.add("valid");
+      } else {
+        length.classList.remove("valid");
+        length.classList.add("invalid");
+      }
 
       
     })
