@@ -62,7 +62,7 @@ import swal from 'sweetalert'
     // editModal.style.display = "block"
   }
 
-  lookPassword = (app) => {
+  lookPassword = async (app) => {
     let lowerCaseLetters = /[a-z]/g
     
     if (!app.password.match(lowerCaseLetters)) {
@@ -72,8 +72,8 @@ import swal from 'sweetalert'
         app: app.app,
         key: app['.key']
       })
-      var loginModal = document.getElementById('loginModal')
-      loginModal.style.display = "block"
+      // var loginModal = document.getElementById('loginModal')
+      // loginModal.style.display = "block"
     } else {
       UserStore.hiddenPassword(app)
     }

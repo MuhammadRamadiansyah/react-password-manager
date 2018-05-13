@@ -2,7 +2,9 @@ import React, { Component } from 'react'
 import './Modal.css'
 import RegisterForm from './RegisterForm'
 import LoginForm from './LoginForm'
+import { inject } from 'mobx-react';
 
+inject('UserStore')
 export default class Modal extends Component {
 
   componentDidMount() {

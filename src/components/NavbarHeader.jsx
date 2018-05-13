@@ -11,10 +11,10 @@ import localStorageMock from '../LocalStorageMock'
 
 @observer class NavbarHeader extends Component {
 
-  UNSAFE_componentWillMount () {
+  UNSAFE_componentWillMount = async () => {
     if(localStorageMock.getItem('userKey')) {
-      UserStore.getUsersData(localStorageMock.getItem('userKey'))
-      UserStore.getAppsData(localStorageMock.getItem('userKey'))
+      await UserStore.getUsersData(localStorageMock.getItem('userKey'))
+      await UserStore.getAppsData(localStorageMock.getItem('userKey'))
     }
   }
 

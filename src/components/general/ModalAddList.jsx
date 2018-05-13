@@ -13,8 +13,8 @@ export default class Modal extends Component {
     }
   }
   openModal = () => {
-    var modal = document.getElementById('addListModal')
-    modal.style.display = "block"
+    // var modal = document.getElementById('addListModal')
+    // modal.style.display = "block"
   }
 
   logout = () => {

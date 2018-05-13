@@ -1,6 +1,31 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`CRUD Testing create new app 1`] = `
+exports[`<HomeAlert /> render Home alert testing element 1`] = `
+<div
+  className="home-alert"
+>
+  <h1>
+    How To Use This Apps?
+  </h1>
+  <p>
+    1. Login at the right corner of the window
+  </p>
+  <p>
+    2. If you don't have an account, please register yourself
+  </p>
+  <p>
+    3. You can add your application url, account or email, and also password
+  </p>
+  <p>
+    4. You can also edit and delete your application list
+  </p>
+  <p>
+    5. If you have probles please contact administrator!
+  </p>
+</div>
+`;
+
+exports[`CRUD Testing, look Password, hide Password and search App create new app 1`] = `
 <div>
   <div
     className="modal-header"
@@ -258,6 +283,435 @@ exports[`Register and Login form test Register form all button are works email h
         special character
       </b>
     </p>
+  </div>
+</div>
+`;
+
+exports[`mount testing compoonents testing components that have props methods <TableManager /> testing component 1`] = `
+<table>
+  <thead
+    className="header-table"
+  >
+    <tr>
+      <th>
+        No
+      </th>
+      <th>
+        URL
+      </th>
+      <th>
+        Email
+      </th>
+      <th>
+        Password
+      </th>
+      <th>
+        Created At
+      </th>
+      <th>
+        Updated At
+      </th>
+      <th>
+        Actions
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>
+         
+        1
+         
+      </th>
+      <th>
+         
+        Jest2
+         
+      </th>
+      <th>
+         
+        rama2appss@gmail.com
+         
+      </th>
+      <th>
+         
+        *************
+         
+      </th>
+      <th>
+         
+        May 13, 2018
+         
+      </th>
+      <th>
+         
+        May 13, 2018
+         
+      </th>
+      <th>
+        <i
+          className="fa fa-eye"
+          onClick={[Function]}
+        />
+        <span>
+           | 
+        </span>
+        <i
+          className="fa fa-edit"
+          id="editApp"
+          onClick={undefined}
+        />
+        <span>
+           | 
+        </span>
+        <i
+          className="fa fa-trash"
+          onClick={[Function]}
+        />
+      </th>
+    </tr>
+    <tr>
+      <th>
+         
+        2
+         
+      </th>
+      <th>
+         
+        Jest23
+         
+      </th>
+      <th>
+         
+        rama2appss@gmail.com
+         
+      </th>
+      <th>
+         
+        *************
+         
+      </th>
+      <th>
+         
+        May 13, 2018
+         
+      </th>
+      <th>
+         
+        May 13, 2018
+         
+      </th>
+      <th>
+        <i
+          className="fa fa-eye"
+          onClick={[Function]}
+        />
+        <span>
+           | 
+        </span>
+        <i
+          className="fa fa-edit"
+          id="editApp"
+          onClick={undefined}
+        />
+        <span>
+           | 
+        </span>
+        <i
+          className="fa fa-trash"
+          onClick={[Function]}
+        />
+      </th>
+    </tr>
+    <tr>
+      <th>
+         
+        3
+         
+      </th>
+      <th>
+         
+        Jest23
+         
+      </th>
+      <th>
+         
+        rama2appss@gmail.com
+         
+      </th>
+      <th>
+         
+        *************
+         
+      </th>
+      <th>
+         
+        May 13, 2018
+         
+      </th>
+      <th>
+         
+        May 13, 2018
+         
+      </th>
+      <th>
+        <i
+          className="fa fa-eye"
+          onClick={[Function]}
+        />
+        <span>
+           | 
+        </span>
+        <i
+          className="fa fa-edit"
+          id="editApp"
+          onClick={undefined}
+        />
+        <span>
+           | 
+        </span>
+        <i
+          className="fa fa-trash"
+          onClick={[Function]}
+        />
+      </th>
+    </tr>
+  </tbody>
+</table>
+`;
+
+exports[`test each of components element <LoginForm /> component 1`] = `
+<div>
+  <div
+    className="modal-header"
+  >
+    <h1>
+       Login Form 
+    </h1>
+  </div>
+  <form>
+    <div
+      className="container"
+    >
+      <label
+        htmlFor="email"
+      >
+        <b>
+          Email
+        </b>
+      </label>
+      <input
+        id="loginEmail"
+        name="email"
+        onChange={[Function]}
+        placeholder="Enter Email"
+        required={true}
+        type="text"
+        value=""
+      />
+      <label
+        htmlFor="psw"
+      >
+        <b>
+          Password
+        </b>
+      </label>
+      <input
+        id="loginPassword"
+        name="password"
+        onChange={[Function]}
+        placeholder="Enter Password"
+        required={true}
+        type="password"
+        value=""
+      />
+      <div
+        className="container actionButton"
+      >
+        <button
+          className="cancelbtn"
+          onClick={[Function]}
+          type="button"
+        >
+          Cancel
+        </button>
+        <button
+          onClick={[Function]}
+          type="submit"
+        >
+          Submit
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+`;
+
+exports[`test each of components element <ModalAddList /> component 1`] = `
+<div>
+  <button
+    className="modalbtn"
+    onClick={[Function]}
+    type="button"
+  >
+     Add List
+  </button>
+  <button
+    className="cancelbtn"
+    onClick={[Function]}
+    style={
+      Object {
+        "margin": "0px 10px",
+      }
+    }
+    type="button"
+  >
+     Logout 
+  </button>
+  <div
+    className="modal scale-up-center"
+    id="addListModal"
+  >
+    <div
+      className="modal-content"
+    >
+      <div>
+        <div
+          className="modal-header"
+        >
+          <h1>
+             
+            ADD
+             LIST FORM
+          </h1>
+        </div>
+        <form>
+          <div
+            className="container"
+          >
+            <label
+              htmlFor="appName"
+            >
+              <b>
+                App Name
+              </b>
+            </label>
+            <input
+              id="appName"
+              name="app"
+              onChange={[Function]}
+              placeholder="Enter your apps link"
+              required={true}
+              type="text"
+              value=""
+            />
+            <label
+              htmlFor="email"
+            >
+              <b>
+                Email
+              </b>
+            </label>
+            <input
+              id="appEmail"
+              name="email"
+              onChange={[Function]}
+              placeholder="Enter Email"
+              required={true}
+              type="text"
+              value=""
+            />
+            <label
+              htmlFor="psw"
+            >
+              <b>
+                Password
+              </b>
+            </label>
+            <input
+              id="appPassword"
+              name="password"
+              onChange={[Function]}
+              placeholder="Enter Password"
+              required={true}
+              type="password"
+              value=""
+            />
+            <div
+              className="container actionButton"
+            >
+              <button
+                className="cancelbtn"
+                onClick={[Function]}
+                type="button"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={[Function]}
+                type="submit"
+              >
+                Submit
+              </button>
+            </div>
+          </div>
+        </form>
+        <div
+          id="message"
+        >
+          <h3>
+            Password must contain the following:
+          </h3>
+          <p
+            className="invalid"
+            id="letter"
+          >
+            A 
+            <b>
+              lowercase
+            </b>
+             letter
+          </p>
+          <p
+            className="invalid"
+            id="capital"
+          >
+            A 
+            <b>
+              capital (uppercase)
+            </b>
+             letter
+          </p>
+          <p
+            className="invalid"
+            id="number"
+          >
+            A 
+            <b>
+              number
+            </b>
+          </p>
+          <p
+            className="invalid"
+            id="length"
+          >
+            Minimum 
+            <b>
+              8 characters
+            </b>
+          </p>
+          <p
+            className="invalid"
+            id="special"
+          >
+            A 
+            <b>
+              special character
+            </b>
+          </p>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 `;

@@ -4,22 +4,31 @@ import renderer from 'react-test-renderer'
 import App from './App'
 import Enzyme, { mount, shallow } from 'enzyme'
 import Adapter from 'enzyme-adapter-react-16'
-import NavbarHeader from './components/NavbarHeader'
-import Home from './components/Home'
 import UserStore from './stores/UserStore'
 import { Provider } from 'mobx-react'
+
+//Component module
+import Home from './components/Home'
+import NavbarHeader from './components/NavbarHeader'
 import Modal from './components/general/Modal'
 import ModalAddList from './components/general/ModalAddList'
 import SearchFeature from './components/general/SearchFeature'
 import RegisterForm from "./components/general/RegisterForm"
+import AddListForm from './components/general/AddListForm';
 import LoginForm from "./components/general/LoginForm"
+import HomeAlert from "./components/general/HomeAlert"
 import TableManager from "./components/homes/TableManager"
 
 // import { wrap } from 'module'
 import localStorageMock from './LocalStorageMock'
-import AddListForm from './components/general/AddListForm';
 import { wrap } from 'module';
 Enzyme.configure({ adapter: new Adapter() })
+
+it('renders without crashing', () => {
+  const div = document.createElement('div', { id: 'root' });
+  ReactDOM.render(<div id="root"><App /></div>, div);
+  ReactDOM.unmountComponentAtNode(div);
+})
 
 describe('<App /> rendering', () => {
   it('should render navbar header component and home', () => {
@@ -28,6 +37,13 @@ describe('<App /> rendering', () => {
       <NavbarHeader />,
       <Home />
     ]))
+  })
+})
+
+describe('<HomeAlert /> render', () => {
+  it('Home alert testing element', () => {
+    const component = renderer.create(<HomeAlert/>)
+    expect(component).toMatchSnapshot()
   })
 })
 
@@ -55,8 +71,9 @@ describe('<NavbarHeader /> render', () => {
 })
 
 describe('<Modal /> render', () => {
+
   it('should has component <RegisterForm /> and <LoginForm />', () => {
-    const wrapper = shallow(<div />)
+    const wrapper = shallow(<Modal UserStore={UserStore}/>)
     expect(wrapper.containsAllMatchingElements([
       <LoginForm />,
       <RegisterForm />
@@ -64,7 +81,7 @@ describe('<Modal /> render', () => {
   })
 
   it('login and register modal button are works', () => {
-    const modal = shallow(<Modal />)
+    const modal = shallow(<Modal UserStore={UserStore}/>)
     const registerModal = shallow(<div id="myModal"/>)
     const loginModal = shallow(<div id="loginModal"/>)
     expect(registerModal.hasClass('scale-up-center'))
@@ -82,7 +99,6 @@ describe('<Modal /> render', () => {
 
     expect(openModal).toBeCalled()
     expect(openLoginModal).toBeCalled()
-
   })
 })
 
@@ -206,10 +222,14 @@ describe ('Check props and password validation methods', () => {
   })
 })
 
-describe('CRUD Testing', () => {
+describe('CRUD Testing, look Password, hide Password and search App', () => {
 
-  let countApps
-  let testApp 
+  let countApps,
+      testApp,
+      userEmail, 
+      userPassword,
+      strongRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})")
+
   beforeEach( async () => {
     const wrapper = shallow(<LoginForm />)
     expect(wrapper.state('email')).toBe('')
@@ -219,7 +239,9 @@ describe('CRUD Testing', () => {
     {target: {name: 'email', value:'rama2@gmail.com'}})
     wrapper.find('#loginPassword').simulate('change', 
     {target: {name: 'password', value:'Rama12345'}})
-    await UserStore.login(wrapper.state().email, wrapper.state().password)
+    userEmail = wrapper.state().email
+    userPassword = wrapper.state().password
+    await UserStore.login(userEmail, userPassword)
     countApps = UserStore.user.apps.length
     testApp = UserStore.user.apps[UserStore.user.apps.length-1]
   })
@@ -283,14 +305,110 @@ describe('CRUD Testing', () => {
       app: wrapperForm.state().app
     }
     await UserStore.editApp(localStorageMock.getItem('userKey'), testApp['.key'], payload)
-    let editApp = UserStore.user.apps[UserStore.user.apps.length-1]
-    expect(editApp.email).toEqual(payload.email)
-    expect(editApp.realPassword).toEqual(payload.password)
-    expect(editApp.app).toEqual(payload.app)
+    testApp = UserStore.user.apps[UserStore.user.apps.length-1]
+
+    expect(testApp.email).toEqual(payload.email)
+    expect(testApp.realPassword).toEqual(payload.password)
+    expect(testApp.app).toEqual(payload.app)
   })
 
+  test('look password and hide password', async () => {
+    
+    expect(testApp.password).not.toMatch(strongRegex)
+
+    //show password
+    await UserStore.lookPassword(userEmail, userPassword, testApp['.key'])
+    testApp = UserStore.user.apps[UserStore.user.apps.length-1]
+    expect(testApp.password).toMatch(strongRegex)
+    expect(testApp.password).toEqual(testApp.realPassword)
+
+    //hide password
+    await UserStore.hiddenPassword(testApp)
+    testApp = UserStore.user.apps[UserStore.user.apps.length-1]
+    expect(testApp.password).not.toMatch(strongRegex)
+  })
+
+  test('search app name', async () => {
+    const searchWrapper = shallow(<SearchFeature />)
+    expect(searchWrapper.state('search')).toBe('')
+    searchWrapper.find('#searchApp').simulate('change', 
+    {target: {name: 'search', value:'3'}})
+    expect(searchWrapper.state().search).toBe('3')
+    var regex = new RegExp(searchWrapper.state().search, "g")
+    await UserStore.searchData(searchWrapper.state().search)
+    UserStore.user.apps.forEach(app => {
+      expect(app.app).toMatch(regex)
+    })
+  })
   afterAll( async () => {
     await UserStore.deleteApp(localStorageMock.getItem('userKey'), UserStore.user.apps[UserStore.user.apps.length-1]['.key'])
     expect(UserStore.user.apps.length).toEqual(countApps)
+  })
+})
+
+describe('mount testing compoonents', async () => {
+  let testKey = '-LBj_XMYcT_4_7tpJymu',
+      testEmail = 'rama2@gmail.com',
+      testApp
+      
+  it('<NavbarHeader /> mount testing, should have user and apps data', () => {
+    localStorageMock.setItem('userKey', testKey)
+    const wrapper = mount(<NavbarHeader />)
+    expect(UserStore.user.email).toEqual(testEmail)
+    expect(UserStore.user.apps.length).toBeGreaterThan(0)
+  })
+
+  describe('testing components that have props methods', () => {
+
+    it('<TableManager /> testing component', () => {
+      testApp = UserStore.user.apps[0]
+      const home = shallow(<Home />)
+      const deleteApp = home.instance().deleteApp
+      const editApp = home.instance().editApp
+      const lookPassword = home.instance().lookPassword
+      const component = renderer.create(<TableManager user={UserStore.user} UserStore={UserStore} delete={deleteApp} edit={editApp} look={lookPassword}/>)
+      const wrapper = shallow(<TableManager UserStore={UserStore} delete={deleteApp} edit={editApp} look={lookPassword}/>)
+      const instance = home.instance()
+      const editAppMock = jest.spyOn(instance, 'editApp')
+      wrapper.instance().props.edit(testApp)
+      home.instance().editApp(testApp)
+      expect(editAppMock).toHaveBeenCalledWith(testApp)
+      expect(component).toMatchSnapshot()
+    })
+  })
+
+})
+
+describe('test each of components element', () => {
+  it('<ModalAddList /> component', () => {
+    const component = renderer.create(<ModalAddList />)
+    const wrapper = shallow(<ModalAddList logout={() => localStorageMock.removeItem('userKey')} />)
+    expect(wrapper.containsAllMatchingElements([
+      <AddListForm />,
+      <button />,
+      <div />
+    ]))
+    expect(component).toMatchSnapshot()
+
+    //Modal Button open works
+    const instance = wrapper.instance()
+    const openModal = jest.spyOn(instance, 'openModal')
+    const logoutMethod = jest.spyOn(instance, 'logout')
+    wrapper.instance().openModal()
+    wrapper.instance().logout()
+    expect(openModal).toBeCalled()
+    expect(logoutMethod).toBeCalled()
+  })
+
+  it('<LoginForm /> component', () => {
+    const component = renderer.create(<LoginForm />)
+    const wrapper = shallow(<LoginForm />)
+    expect(wrapper.containsAllMatchingElements([
+      <form />,
+      <button />,
+      <h1 />,
+      <div />
+    ]))
+    expect(component).toMatchSnapshot()
   })
 })

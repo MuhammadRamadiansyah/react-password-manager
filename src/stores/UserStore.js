@@ -47,15 +47,19 @@ class UserStore {
   }
 
   searchData = (payload) => {
-    this.getAppsData (localStorage.getItem('userKey'))
-    var regex = new RegExp(payload, "g")
-    let searchArr = []
-    this.user.apps.forEach(element => {
-      if (element.app.match(regex)) {
-        searchArr.push(element)
-      }
-    })
-    this.user.apps = searchArr
+    return new Promise((resolve, reject) => {
+      this.getAppsData (localStorageMock.getItem('userKey'))
+      var regex = new RegExp(payload, "g")
+      let searchArr = []
+      this.user.apps.forEach(element => {
+        if (element.app.match(regex)) {
+          searchArr.push(element)
+        }
+      })
+      this.user.apps = searchArr
+      resolve()
+      reject()
+    }) 
   }
   register = (email, password) => {
     db.ref('users').push({
@@ -152,35 +156,44 @@ class UserStore {
   }
 
   lookPassword = (email, password, appKey) => {
-    let loginCond = false
-    db.ref('users').once('value', (snapshot) => {
-      snapshot.forEach(element => {
-        let getUser = element.val()
-        if (getUser.email === email && getUser.password === password) {
-          if (getUser.apps[appKey]) {
-            let index = this.user.apps.findIndex(app => app['.key'] === appKey)
-            let newData = getUser.apps[appKey]
-            newData['.key'] = appKey
-            newData.realPassword = getUser.apps[appKey].password
-            this.user.apps.splice(index, 1, getUser.apps[appKey])
-            loginCond = true
+    return new Promise((resolve, reject) => {
+      let loginCond = false
+      db.ref('users').once('value', (snapshot) => {
+        snapshot.forEach(element => {
+          let getUser = element.val()
+          if (getUser.email === email && getUser.password === password) {
+            if (getUser.apps[appKey]) {
+              let index = this.user.apps.findIndex(app => app['.key'] === appKey)
+              let newData = getUser.apps[appKey]
+              newData['.key'] = appKey
+              newData.realPassword = getUser.apps[appKey].password
+              this.user.apps.splice(index, 1, getUser.apps[appKey])
+              loginCond = true
+              resolve()
+            }
           }
+        })
+        if(!loginCond) {
+          swal("Oops!", "Username or password is wrong!", "error")
+          reject('error')
         }
       })
-      if(!loginCond) {
-        swal("Oops!", "Username or password is wrong!", "error")
-      }
     })
   }
 
   hiddenPassword = (data) => {
-    let index = this.user.apps.findIndex(app => app['.key'] === data['.key'])
-    let hiddenPsw = ''
-    for (let i = 0; i < data.password.length; i++) {
-      hiddenPsw += '*'
-    }
-    data.password = hiddenPsw
-    this.user.apps.splice(index, 1, data)
+
+    return new Promise((resolve, reject) => {
+      let index = this.user.apps.findIndex(app => app['.key'] === data['.key'])
+      let hiddenPsw = ''
+      for (let i = 0; i < data.password.length; i++) {
+        hiddenPsw += '*'
+      }
+      data.password = hiddenPsw
+      this.user.apps.splice(index, 1, data)
+      resolve()
+      reject()
+    })
   }
 
   getDate = (date) => {

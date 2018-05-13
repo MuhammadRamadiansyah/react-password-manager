@@ -25,11 +25,12 @@ class SearchFeature extends Component {
             type="text" 
             onChange ={this.handleSearch} 
             value= {this.search} 
+            id="searchApp"
             style = {{
               width: '13vw',
               margin: '0px 10px',
             }}/>
-            <button type="button" onClick = { this.handleSubmit }> Search </button>
+            <button type="button" id="searchBtn" onClick = { this.handleSubmit }> Search </button>
         </form>
       </div>
     );
