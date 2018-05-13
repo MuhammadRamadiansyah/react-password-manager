@@ -3,15 +3,15 @@ import './AddListForm.css'
 import { inject } from 'mobx-react';
 import UserStore from '../../stores/UserStore';
 import swal from 'sweetalert'
-
-@inject('UserStore')
+import localStorageMock from '../../LocalStorageMock'
 class AddListForm extends Component {
   constructor () {
     super()
     this.state = {
       email: '',
       password: '',
-      app: ''
+      app: '',
+      isPassword: false
     }
   }
 
@@ -30,14 +30,14 @@ class AddListForm extends Component {
   }
   closeModal = () => {
     var modal = document.getElementById(`${this.props.title}ListModal`)
-    modal.style.display = "none"
+    // modal.style.display = "none"
   }
 
   handleChangeEmail = (e) => {
     this.setState({
       email: e.target.value
     })
-    document.getElementById("message").style.display = "none";
+    // document.getElementById("message").style.display = "none";
   }
 
   passwordValidation = () => {
@@ -47,14 +47,14 @@ class AddListForm extends Component {
         length,
         special
       if (this.props.title !== 'edit') {
-        document.getElementById("message").style.display = "block";
+        // document.getElementById("message").style.display = "block";
         letter = document.getElementById("letter");
         capital = document.getElementById("capital");
         number = document.getElementById("number");
         length = document.getElementById("length")
         special = document.getElementById("special")
       } else {
-        document.getElementById("editmessage").style.display = "block";
+        // document.getElementById("editmessage").style.display = "block";
         letter = document.getElementById("editletter");
         capital = document.getElementById("editcapital");
         number = document.getElementById("editnumber");
@@ -64,50 +64,50 @@ class AddListForm extends Component {
       
       let lowerCaseLetters = /[a-z]/g;
       if(this.state.password.match(lowerCaseLetters)) {  
-        letter.classList.remove("invalid");
-        letter.classList.add("valid");
+        // letter.classList.remove("invalid");
+        // letter.classList.add("valid");
       } else {
-        letter.classList.remove("valid");
-        letter.classList.add("invalid");
+        // letter.classList.remove("valid");
+        // letter.classList.add("invalid");
       }
       
       // Validate capital letters
       let upperCaseLetters = /[A-Z]/g;
       if(this.state.password.match(upperCaseLetters)) {  
-        capital.classList.remove("invalid");
-        capital.classList.add("valid");
+        // capital.classList.remove("invalid");
+        // capital.classList.add("valid");
       } else {
-        capital.classList.remove("valid");
-        capital.classList.add("invalid");
+        // capital.classList.remove("valid");
+        // capital.classList.add("invalid");
       }
   
       // Validate numbers
       let numbers = /[0-9]/g;
       if(this.state.password.match(numbers)) {  
-        number.classList.remove("invalid");
-        number.classList.add("valid");
+        // number.classList.remove("invalid");
+        // number.classList.add("valid");
       } else {
-        number.classList.remove("valid");
-        number.classList.add("invalid");
+        // number.classList.remove("valid");
+        // number.classList.add("invalid");
       }
 
       // eslint-disable-next-line
       let specials = /[\'^£$%&*()}{@#~?><>,|=_+!-]/g;
       if(this.state.password.match(specials)) {  
-        special.classList.remove("invalid");
-        special.classList.add("valid");
+        // special.classList.remove("invalid");
+        // special.classList.add("valid");
       } else {
-        special.classList.remove("valid");
-        special.classList.add("invalid");
+        // special.classList.remove("valid");
+        // special.classList.add("invalid");
       }
       
       // Validate length
       if(this.state.password.length >= 8) {
-        length.classList.remove("invalid");
-        length.classList.add("valid");
+        // length.classList.remove("invalid");
+        // length.classList.add("valid");
       } else {
-        length.classList.remove("valid");
-        length.classList.add("invalid");
+        // length.classList.remove("valid");
+        // length.classList.add("invalid");
       }
   }
 
@@ -124,14 +124,15 @@ class AddListForm extends Component {
     this.setState({
       app: e.target.value
     })
-    document.getElementById("message").style.display = "none";
+    // document.getElementById("message").style.display = "none";
   }
 
   clearForm () {
     this.setState({
       email: '',
       password: '',
-      app: ''
+      app: '',
+      isPassword: false,
     })
   }
 
@@ -143,14 +144,20 @@ class AddListForm extends Component {
     let specials = /[\'^£$%&*()}{@#~?><>,|=_+!-]/g;
 
     if (password.match(lowerCaseLetters) && password.match(upperCaseLetters) && password.match(numbers) && password.match(specials) && password.length >= 8) {
+      this.setState({
+        isPassword: true
+      })
       return true
     } else {
+      this.setState({
+        isPassword: false
+      })
       return false
     }
       
   }
 
-  handleSubmit = (e) => {
+  handleSubmit = async (e) => {
     e.preventDefault()
     this.closeModal()
     this.clearForm()
@@ -159,12 +166,12 @@ class AddListForm extends Component {
       password: this.state.password,
       app: this.state.app
     }
-    document.getElementById("message").style.display = "none";
+    // document.getElementById("message").style.display = "none";
     if (this.validatePassword(payload.password)) {
       if (this.props.title === 'edit') {
-        UserStore.editApp(localStorage.getItem('userKey'), this.props.data.key, payload)
+        await UserStore.editApp(localStorageMock.getItem('userKey'), this.props.data.key, payload)
       } else {
-        UserStore.registerApp(localStorage.getItem('userKey'), payload)
+        await UserStore.registerApp(localStorageMock.getItem('userKey'), payload)
       }
     } else {
       swal("Oops!", "Password not too strong!", "error")
@@ -182,11 +189,11 @@ class AddListForm extends Component {
         <form>
           <div className="container">
             <label htmlFor="appName"><b>App Name</b></label>
-            <input type="text" placeholder="Enter your apps link" onChange={ this.handleChangeAppName } name="app" required  value ={this.state.app}/>
+            <input type="text" id="appName" placeholder="Enter your apps link" onChange={ this.handleChangeAppName } name="app" required  value ={this.state.app}/>
             <label htmlFor="email"><b>Email</b></label>
-            <input type="text" placeholder="Enter Email" onChange={ this.handleChangeEmail } name="email" required  value ={this.state.email}/>
+            <input type="text" id="appEmail" placeholder="Enter Email" onChange={ this.handleChangeEmail } name="email" required  value ={this.state.email}/>
             <label htmlFor="psw"><b>Password</b></label>
-            <input type="password" placeholder="Enter Password" onChange={ this.handleChangePassword } name="password" required value ={this.state.password}/>
+            <input type="password" id="appPassword" placeholder="Enter Password" onChange={ this.handleChangePassword } name="password" required value ={this.state.password}/>
             <div className="container actionButton">
               <button type="button" onClick={ this.closeModal } className="cancelbtn">Cancel</button>
               <button type="submit" onClick= { this.handleSubmit } >Submit</button>

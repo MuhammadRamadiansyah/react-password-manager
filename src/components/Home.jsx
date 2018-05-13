@@ -9,7 +9,6 @@ import LoginForm from './general/LoginForm.jsx'
 import HomeAlert from './general/HomeAlert'
 import swal from 'sweetalert'
 
-@inject('UserStore')
 @observer class Home extends Component {
   constructor () {
     super()
@@ -59,8 +58,8 @@ import swal from 'sweetalert'
       key: app['.key'],
       realpsw: app.realPassword
     })
-    var editModal = document.getElementById('editListModal')
-    editModal.style.display = "block"
+    // var editModal = document.getElementById('editListModal')
+    // editModal.style.display = "block"
   }
 
   lookPassword = (app) => {

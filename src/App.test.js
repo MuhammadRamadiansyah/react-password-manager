@@ -17,13 +17,14 @@ import TableManager from "./components/homes/TableManager"
 
 // import { wrap } from 'module'
 import localStorageMock from './LocalStorageMock'
+import AddListForm from './components/general/AddListForm';
+import { wrap } from 'module';
 Enzyme.configure({ adapter: new Adapter() })
 
 describe('<App /> rendering', () => {
   it('should render navbar header component and home', () => {
     const wrapper = shallow(<Provider UserStore={UserStore}><App /></Provider>)
     expect(wrapper.containsAllMatchingElements([
-      <div />,
       <NavbarHeader />,
       <Home />
     ]))
@@ -62,7 +63,7 @@ describe('<Modal /> render', () => {
     ]))
   })
 
-  it('login and register modal should has style display none before its called and display block after its called', () => {
+  it('login and register modal button are works', () => {
     const modal = shallow(<Modal />)
     const registerModal = shallow(<div id="myModal"/>)
     const loginModal = shallow(<div id="loginModal"/>)
@@ -125,10 +126,6 @@ describe('Register and Login form test', () => {
   })
 })
 
-describe('application list', () => {
-
-})
-
 describe('UserStore testing', () => {
 
   var loginEmail = ''
@@ -162,6 +159,7 @@ describe('UserStore testing', () => {
       expect(element.realPassword).toMatch(strongRegex)
     })
     expect(UserStore.isLogin).toBeTruthy()
+    expect(localStorageMock.getItem('userKey')).not.toBeNull()
   })
 
   test('generate table with using apps data from firebase', () => {
@@ -173,8 +171,126 @@ describe('UserStore testing', () => {
     const wrapper = shallow(<NavbarHeader />)
     const instance = wrapper.instance()
     const logout = jest.spyOn(instance, 'logout')
-    expect(localStorageMock.getItem('userKey')).not.toBeNull()
     wrapper.instance().logout()
+    expect(logout).toBeCalled()
     expect(localStorageMock.getItem('userKey')).toBeNull()
+    expect(UserStore.isLogin).toBeFalsy()
+  })
+})
+
+describe ('Check props and password validation methods', () => {
+
+  it('testing props edit and add title list form', () => {
+    let wrapperEdit = shallow(<AddListForm title="edit"/>)
+    let wrapperAdd = shallow(<AddListForm title="add"/>)
+    expect(wrapperEdit.instance().props.title).toBe('edit')
+    expect(wrapperAdd.instance().props.title).toBe('add')
+  })
+
+  test('password validation methods', () => {
+    const wrapper = shallow(<AddListForm title="edit"/>)
+    const instance = wrapper.instance()
+    const validatePassword = jest.spyOn(instance, 'validatePassword')
+
+    //invalid password
+    wrapper.find('#appPassword').simulate('change', 
+    {target: {name: 'password', value:'rama'}})
+    wrapper.instance().validatePassword(wrapper.state().password)
+    expect(wrapper.state().isPassword).toBeFalsy()
+
+    //valid Password
+    wrapper.find('#appPassword').simulate('change', 
+    {target: {name: 'password', value:'Rama12345!'}})
+    wrapper.instance().validatePassword(wrapper.state().password)
+    expect(wrapper.state().isPassword).toBeTruthy()
+  })
+})
+
+describe('CRUD Testing', () => {
+
+  let countApps
+  let testApp 
+  beforeEach( async () => {
+    const wrapper = shallow(<LoginForm />)
+    expect(wrapper.state('email')).toBe('')
+    expect(wrapper.state('password')).toBe('')
+
+    wrapper.find('#loginEmail').simulate('change', 
+    {target: {name: 'email', value:'rama2@gmail.com'}})
+    wrapper.find('#loginPassword').simulate('change', 
+    {target: {name: 'password', value:'Rama12345'}})
+    await UserStore.login(wrapper.state().email, wrapper.state().password)
+    countApps = UserStore.user.apps.length
+    testApp = UserStore.user.apps[UserStore.user.apps.length-1]
+  })
+
+  test('create new app', async () => {
+    const component = renderer.create(<AddListForm title="add"/>)
+    expect(component).toMatchSnapshot()
+
+    const wrapper = shallow(<AddListForm title="add"/>)
+    // const instance = wrapper.instance()
+    wrapper.find('#appEmail').simulate('change', 
+    {target: {name: 'email', value:'rama2appss@gmail.com'}})
+    wrapper.find('#appPassword').simulate('change', 
+    {target: {name: 'password', value:'Rama12345App!'}})
+    wrapper.find('#appName').simulate('change', 
+    {target: {name: 'app', value:'Jest23'}})
+    let payload = {
+      email: wrapper.state().email,
+      password: wrapper.state().password,
+      app: wrapper.state().app
+    }
+    // const submit = jest.spyOn(instance, 'handleSubmit')
+    // wrapper.instance().handleSubmit({ preventDefault() {} })
+    await UserStore.registerApp(localStorageMock.getItem('userKey'), payload)
+    expect(UserStore.user.apps.length).toEqual(countApps + 1)
+    // expect(submit).toBeCalled()
+  })
+  
+  test('edit app', async () => {
+
+    //edit app initiate
+    const wrapper = shallow(<Home />)
+    const wrapperForm = shallow(<AddListForm title="edit"/>)
+    const instance = wrapper.instance()
+    const edit = jest.spyOn(instance, 'editApp')
+    expect(wrapper.state().email).toBe('')
+    expect(wrapper.state().password).toBe('')
+    expect(wrapper.state().app).toBe('')
+    expect(wrapper.state().key).toBe('')
+    expect(wrapper.state().realpsw).toBe('')
+    wrapper.instance().editApp(testApp)
+    expect(edit).toHaveBeenCalledWith(testApp)
+    
+    //after edit button click and before edit
+    expect(wrapper.state().email).toEqual(testApp.email)
+    expect(wrapper.state().password).toEqual(testApp.password)
+    expect(wrapper.state().app).toEqual(testApp.app)
+    expect(wrapper.state().key).toEqual(testApp['.key'])
+    expect(wrapper.state().realpsw).toEqual(testApp.realPassword)
+
+    //after edit
+    wrapperForm.find('#appEmail').simulate('change', 
+    {target: {name: 'email', value:'rama2appssedit@gmail.com'}})
+    wrapperForm.find('#appPassword').simulate('change', 
+    {target: {name: 'password', value:'Rama12345App!edit'}})
+    wrapperForm.find('#appName').simulate('change', 
+    {target: {name: 'app', value:'Jest23edit'}})
+    let payload = {
+      email: wrapperForm.state().email,
+      password: wrapperForm.state().password,
+      app: wrapperForm.state().app
+    }
+    await UserStore.editApp(localStorageMock.getItem('userKey'), testApp['.key'], payload)
+    let editApp = UserStore.user.apps[UserStore.user.apps.length-1]
+    expect(editApp.email).toEqual(payload.email)
+    expect(editApp.realPassword).toEqual(payload.password)
+    expect(editApp.app).toEqual(payload.app)
+  })
+
+  afterAll( async () => {
+    await UserStore.deleteApp(localStorageMock.getItem('userKey'), UserStore.user.apps[UserStore.user.apps.length-1]['.key'])
+    expect(UserStore.user.apps.length).toEqual(countApps)
   })
 })

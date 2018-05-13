@@ -70,31 +70,53 @@ class UserStore {
   }
 
   registerApp = (key, payload) => {
-    payload.createdAt =  firebase.database.ServerValue.TIMESTAMP
-    payload.updatedAt = firebase.database.ServerValue.TIMESTAMP
-    db.ref('users/' + key + '/apps').push(payload)
-    this.getAppsData(key)
-    swal({
-      title: "Good job!",
-      text: "You are successfully add new app!",
-      icon: "success",
+
+    return new Promise((resolve, reject) => {
+      payload.createdAt =  firebase.database.ServerValue.TIMESTAMP
+      payload.updatedAt = firebase.database.ServerValue.TIMESTAMP
+      db.ref('users/' + key + '/apps').push(payload)
+      this.getAppsData(key)
+          .then(() => {
+            resolve(payload)
+            swal({
+              title: "Good job!",
+              text: "You are successfully add new app!",
+              icon: "success",
+            })
+          })
+          .catch(() => {
+            console.log('err')
+          })
     })
   }
 
   editApp = (key, keyApp, payload) => {
-    payload.updatedAt = firebase.database.ServerValue.TIMESTAMP
-    db.ref('users/' + key + '/apps/' + keyApp).update(payload)
-    swal({
-      title: "Good job!",
-      text: "You are successfully edit your apps!",
-      icon: "success",
-    })
-    this.getAppsData(key)
+    return new Promise((resolve, reject) => {
+      payload.updatedAt = firebase.database.ServerValue.TIMESTAMP
+      db.ref('users/' + key + '/apps/' + keyApp).update(payload)
+      swal({
+        title: "Good job!",
+        text: "You are successfully edit your apps!",
+        icon: "success",
+      })
+      this.getAppsData(key)
+          .then(() => {
+            resolve()
+          })
+          .catch(() => {
+            reject()
+          })
+    }) 
   }
 
   deleteApp = (key, appKey) => {
-    db.ref(`users/${key}/apps/${appKey}`).remove()
-    this.getAppsData(key)
+    return new Promise((resolve, reject) => {
+      db.ref(`users/${key}/apps/${appKey}`).remove()
+      this.getAppsData(key)
+      resolve()
+      reject()
+    })
+    
   }
 
   login = (email, password) => {
