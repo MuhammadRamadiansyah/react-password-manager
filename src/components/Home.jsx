@@ -8,6 +8,7 @@ import './general/ModalAddList.css'
 import LoginForm from './general/LoginForm.jsx'
 import HomeAlert from './general/HomeAlert'
 import swal from 'sweetalert'
+import LocalStorageMock from '../LocalStorageMock';
 
 @observer class Home extends Component {
   constructor () {
@@ -21,16 +22,17 @@ import swal from 'sweetalert'
     }
   }
   
-  componentDidMount() {
-    var modal = document.getElementById('editListModal')
-    window.onclick = function(event) {
-      if (event.target === modal) {
-        modal.style.display = "none";
-      } 
-    }
-  }
+  // componentDidMount() {
+  //   var modal = document.getElementById('editListModal')
+  //   window.onclick = function(event) {
+  //     if (event.target === modal) {
+  //       modal.style.display = "none";
+  //     } 
+  //   }
+  // }
   
-  deleteApp = (app) => {
+  deleteApp = async (app) => {
+    await UserStore.deleteApp(LocalStorageMock.getItem('userKey'), app['.key'])
     swal({
       title: "Are you sure?",
       text: "Once deleted, you will not be able to recover this file",
@@ -43,7 +45,7 @@ import swal from 'sweetalert'
         swal("Poof! Your file has been deleted!", {
           icon: "success",
         });
-        UserStore.deleteApp(localStorage.getItem('userKey'), app['.key'])
+        // await UserStore.deleteApp(localStorage.getItem('userKey'), app['.key'])
       } else {
         swal("Your file is safe!");
       }
@@ -64,7 +66,6 @@ import swal from 'sweetalert'
 
   lookPassword = async (app) => {
     let lowerCaseLetters = /[a-z]/g
-    
     if (!app.password.match(lowerCaseLetters)) {
       this.setState({
         email: app.email,
@@ -75,7 +76,7 @@ import swal from 'sweetalert'
       // var loginModal = document.getElementById('loginModal')
       // loginModal.style.display = "block"
     } else {
-      UserStore.hiddenPassword(app)
+      await UserStore.hiddenPassword(app)
     }
   }
 

@@ -40,10 +40,37 @@ describe('<App /> rendering', () => {
   })
 })
 
-describe('<HomeAlert /> render', () => {
+describe('<Home /> render', async () => {
+
+  
+  const wrapper = shallow(<Home />),
+        instance = wrapper.instance()
+  let testKey = '-LBj_XMYcT_4_7tpJymu',
+      testApp
+  
+  beforeEach( async () => {
+    await UserStore.login('rama2@gmail.com', 'Rama12345')
+    testApp = UserStore.user.apps[UserStore.user.apps.length-1]
+  })
   it('Home alert testing element', () => {
     const component = renderer.create(<HomeAlert/>)
     expect(component).toMatchSnapshot()
+  })
+
+  test('<Home /> testing methods for look', async () => {
+    const lookPasswordApp = jest.spyOn(instance, 'lookPassword')
+    await wrapper.instance().lookPassword(testApp)
+    expect(lookPasswordApp).toBeCalled()
+  })
+
+  test('<Home /> delete methods', async() => {
+    const deleteApp = jest.spyOn(instance, 'deleteApp')
+    await wrapper.instance().deleteApp(testApp)
+    expect(deleteApp).toBeCalled()
+  })
+
+  afterEach(() => {
+    localStorageMock.removeItem('userKey')
   })
 })
 
@@ -70,13 +97,20 @@ describe('<NavbarHeader /> render', () => {
   })
 })
 
-describe('<Modal /> render', () => {
+describe('<Modal /> and <ModalAddList /> render', () => {
 
-  it('should has component <RegisterForm /> and <LoginForm />', () => {
+  it('<Modal /> should has component <RegisterForm /> and <LoginForm />', () => {
     const wrapper = shallow(<Modal UserStore={UserStore}/>)
     expect(wrapper.containsAllMatchingElements([
       <LoginForm />,
       <RegisterForm />
+    ]))
+  })
+
+  it('<ModalAddList /> should has component <AddListForm />', () => {
+    const wrapper = shallow(<Modal UserStore={UserStore}/>)
+    expect(wrapper.containsAllMatchingElements([
+      <ModalAddList />
     ]))
   })
 
@@ -105,18 +139,18 @@ describe('<Modal /> render', () => {
 describe('Register and Login form test', () => {
 
   describe('Register form all button are works', () => {
-    it('email handle change, password handle change, and submit are works', () => {
+    it('email handle change, password handle change, and submit are works', async () => {
       const component = renderer.create(<RegisterForm />)
       const wrapper = shallow(<RegisterForm />)
       expect(wrapper.state('email')).toBe('')
       expect(wrapper.state('password')).toBe('')
   
       wrapper.find('#newEmail').simulate('change', 
-      {target: {name: 'email', value:'rama@gmail.com'}})
+      {target: {name: 'email', value:'rama2@gmail.com'}})
       wrapper.find('#newPassword').simulate('change', 
       {target: {name: 'password', value:'Rama12345!'}})
   
-      expect(wrapper.state('email')).toBe('rama@gmail.com')
+      expect(wrapper.state('email')).toBe('rama2@gmail.com')
       expect(wrapper.state('password')).toBe('Rama12345!')
     
       expect(component).toMatchSnapshot()
@@ -130,12 +164,10 @@ describe('Register and Login form test', () => {
 
       //submit modal button works
       const submit = jest.spyOn(instance, 'handleSubmit')
-      // wrapper.instance().handleSubmit({ preventDefault() {} })
+      // await wrapper.instance().handleSubmit({ preventDefault() {} })
       // expect(close).toHaveBeenCalledTimes(1)
       // expect(clear).toHaveBeenCalledTimes(1)
       // expect(submit).toBeCalled()
-
-      // expect(UserStore.register(wrapper.state('email'), wrapper.state('password'))).toBeCalled()
       // expect(wrapper.state('email')).toBe('')
       // expect(wrapper.state('password')).toBe('')
     })
@@ -373,13 +405,15 @@ describe('mount testing compoonents', async () => {
       wrapper.instance().props.edit(testApp)
       home.instance().editApp(testApp)
       expect(editAppMock).toHaveBeenCalledWith(testApp)
-      expect(component).toMatchSnapshot()
     })
   })
 
 })
 
 describe('test each of components element', () => {
+  let testKey = '-LBj_XMYcT_4_7tpJymu',
+      testApp
+
   it('<ModalAddList /> component', () => {
     const component = renderer.create(<ModalAddList />)
     const wrapper = shallow(<ModalAddList logout={() => localStorageMock.removeItem('userKey')} />)
@@ -400,7 +434,7 @@ describe('test each of components element', () => {
     expect(logoutMethod).toBeCalled()
   })
 
-  it('<LoginForm /> component', () => {
+  it('<LoginForm /> component', async () => {
     const component = renderer.create(<LoginForm />)
     const wrapper = shallow(<LoginForm />)
     expect(wrapper.containsAllMatchingElements([
@@ -410,5 +444,42 @@ describe('test each of components element', () => {
       <div />
     ]))
     expect(component).toMatchSnapshot()
+
+    wrapper.find('#loginEmail').simulate('change', 
+    {target: {name: 'email', value:'rama2@gmail.com'}})
+    wrapper.find('#loginPassword').simulate('change', 
+    {target: {name: 'password', value:'Rama12345'}})
+
+    const instance = wrapper.instance()
+    const submit = jest.spyOn(instance, 'handleSubmit')
+    const close = jest.spyOn(instance, 'closeModal')
+    const clear = jest.spyOn(instance, 'clearForm')
+    await wrapper.instance().handleSubmit({ preventDefault() {} })
+    // expect(close).toHaveBeenCalledTimes(1)
+    // expect(clear).toHaveBeenCalledTimes(1)
+    // expect(submit).toBeCalled()
   })
+
+  // it('<AddListForm /> component', async () => {
+  //   const wrapper = shallow(<AddListForm title="add"/>)
+  //   const instance = wrapper.instance()
+  //   const submit = jest.spyOn(instance, 'handleSubmit')
+  //   const close = jest.spyOn(instance, 'closeModal')
+  //   const clear = jest.spyOn(instance, 'clearForm')
+
+  //   // const instance = wrapper.instance()
+  //   wrapper.find('#appEmail').simulate('change', 
+  //   {target: {name: 'email', value:'rama2appss@gmail.com'}})
+  //   wrapper.find('#appPassword').simulate('change', 
+  //   {target: {name: 'password', value:'Rama12345App!'}})
+  //   wrapper.find('#appName').simulate('change', 
+  //   {target: {name: 'app', value:'Jest23'}})
+    
+  //   // await wrapper.instance().handleSubmit({ preventDefault() {} })
+  //   // expect(close).toHaveBeenCalledTimes(1)
+  //   // expect(clear).toHaveBeenCalledTimes(1)
+  //   // expect(submit).toBeCalled()
+  //   console.log(UserStore.user.apps[UserStore.user.apps.length-1])
+  //   // await UserStore.deleteApp(testKey, UserStore.user.apps[UserStore.user.apps.length-1]['.key'])
+  // })
 })

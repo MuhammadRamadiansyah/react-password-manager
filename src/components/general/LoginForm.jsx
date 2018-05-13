@@ -36,14 +36,14 @@ class LoginForm extends Component {
     }) 
   }
 
-  handleSubmit = (e) => {
+  handleSubmit = async (e) => {
     e.preventDefault()
     this.closeModal()
     this.clearForm()
     if (this.props.title) {
-      UserStore.lookPassword(this.state.email, this.state.password, this.props.data.key)
+      await UserStore.lookPassword(this.state.email, this.state.password, this.props.data.key)
     } else {
-      UserStore.login(this.state.email, this.state.password)
+      await UserStore.login(this.state.email, this.state.password)
     }
   }
 

@@ -4,6 +4,7 @@ import { inject } from 'mobx-react';
 import UserStore from '../../stores/UserStore';
 import swal from 'sweetalert'
 import localStorageMock from '../../LocalStorageMock'
+
 class AddListForm extends Component {
   constructor () {
     super()

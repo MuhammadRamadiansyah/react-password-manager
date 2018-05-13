@@ -21,24 +21,24 @@ import localStorageMock from '../LocalStorageMock'
   logout = () => {
     localStorageMock.removeItem('userKey')
     UserStore.isLogin = false
-    swal({
-      title: "Are you sure?",
-      text: "Do you want to logout?",
-      icon: "warning",
-      buttons: true,
-      dangerMode: true,
-    })
-    .then((willDelete) => {
-      if (willDelete) {
-        swal("Success logout!", {
-          icon: "success",
-        });
-        // localStorageMock.removeItem('userKey')
-        // UserStore.isLogin = false
-      } else {
-        swal("You are still login!");
-      }
-    })
+    // swal({
+    //   title: "Are you sure?",
+    //   text: "Do you want to logout?",
+    //   icon: "warning",
+    //   buttons: true,
+    //   dangerMode: true,
+    // })
+    // .then((willDelete) => {
+    //   if (willDelete) {
+    //     swal("Success logout!", {
+    //       icon: "success",
+    //     });
+    //     // localStorageMock.removeItem('userKey')
+    //     // UserStore.isLogin = false
+    //   } else {
+    //     swal("You are still login!");
+    //   }
+    // })
     
   }
 

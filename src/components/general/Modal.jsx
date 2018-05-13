@@ -7,19 +7,19 @@ import { inject } from 'mobx-react';
 inject('UserStore')
 export default class Modal extends Component {
 
-  componentDidMount() {
-    var modal = document.getElementById('myModal')
-    var loginModal = document.getElementById('loginModal')
-    window.onclick = function(event) {
-      if (event.target === modal) {
-        // modal.style.display = "none";
-      } else if (event.target === loginModal) {
-        // loginModal.style.display = "none";
-      }
-    }
-  }
+  // componentDidMount() {
+  //   var modal = document.getElementById('myModal')
+  //   var loginModal = document.getElementById('loginModal')
+  //   window.onclick = function(event) {
+  //     if (event.target === modal) {
+  //       // modal.style.display = "none";
+  //     } else if (event.target === loginModal) {
+  //       // loginModal.style.display = "none";
+  //     }
+  //   }
+  // }
   openModal = () => {
-    var modal = document.getElementById('myModal')
+    // var modal = document.getElementById('myModal')
     // modal.style.display = "block"
   }
 

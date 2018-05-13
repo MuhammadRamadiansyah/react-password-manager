@@ -98,11 +98,11 @@ class UserStore {
     return new Promise((resolve, reject) => {
       payload.updatedAt = firebase.database.ServerValue.TIMESTAMP
       db.ref('users/' + key + '/apps/' + keyApp).update(payload)
-      swal({
-        title: "Good job!",
-        text: "You are successfully edit your apps!",
-        icon: "success",
-      })
+      // swal({
+      //   title: "Good job!",
+      //   text: "You are successfully edit your apps!",
+      //   icon: "success",
+      // })
       this.getAppsData(key)
           .then(() => {
             resolve()
@@ -135,11 +135,11 @@ class UserStore {
             this.getUsersData(localStorageMock.getItem('userKey'))
                 .then( async () => {
                   await this.getAppsData(localStorageMock.getItem('userKey'))
-                  swal({
-                    title: "Good job!",
-                    text: "You are successfully login!",
-                    icon: "success",
-                  })
+                  // swal({
+                  //   title: "Good job!",
+                  //   text: "You are successfully login!",
+                  //   icon: "success",
+                  // })
                   loginCond = true
                   resolve()
                 })
@@ -149,7 +149,7 @@ class UserStore {
           } 
         })
         if(!loginCond) {
-          swal("Oops!", "Username or password is wrong!", "error")
+          // swal("Oops!", "Username or password is wrong!", "error")
         }
       })
     })

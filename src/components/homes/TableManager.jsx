@@ -14,7 +14,7 @@ import UserStore from '../../stores/UserStore';
       <tr key={ index }>
         <th> {index + 1} </th>
         <th> {element.app } </th>
-        <th> {element.email} </th>
+        <th> {element.email} </th> 
         <th> {element.password} </th>
         <th> {UserStore.getDate(element.createdAt)} </th>
         <th> {UserStore.getDate(element.updatedAt)} </th>

@@ -4,14 +4,14 @@ import './ModalAddList.css'
 
 export default class Modal extends Component {
 
-  componentDidMount() {
-    var modal = document.getElementById('addListModal')
-    window.onclick = function(event) {
-      if (event.target === modal) {
-        modal.style.display = "none";
-      } 
-    }
-  }
+  // componentDidMount() {
+  //   var modal = document.getElementById('addListModal')
+  //   window.onclick = function(event) {
+  //     if (event.target === modal) {
+  //       modal.style.display = "none";
+  //     } 
+  //   }
+  // }
   openModal = () => {
     // var modal = document.getElementById('addListModal')
     // modal.style.display = "block"

@@ -98,11 +98,11 @@ class RegisterForm extends Component {
     })
   }
 
-  handleSubmit = (e) => {
+  handleSubmit = async (e) => {
     e.preventDefault()
     this.closeModal()
     this.clearForm()
-    UserStore.register(this.state.email, this.state.password)
+    await UserStore.register(this.state.email, this.state.password)
   }
 
   render() {
